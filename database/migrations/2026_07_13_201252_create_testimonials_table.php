@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
+            $table->string('author');
+            $table->string('role')->nullable();
+            $table->text('quote');
+            $table->unsignedTinyInteger('rating')->default(5);
+            $table->unsignedSmallInteger('sort_order')->default(0);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

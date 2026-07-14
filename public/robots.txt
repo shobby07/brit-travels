@@ -1,2 +1,6 @@
 User-agent: *
-Disallow:
+Disallow: /admin
+Disallow: /book/thank-you/
+Disallow: /quote/thank-you/
+
+Sitemap: https://brittravel.co.uk/sitemap.xml
