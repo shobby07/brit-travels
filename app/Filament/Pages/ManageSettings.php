@@ -29,7 +29,7 @@ class ManageSettings extends Page
 
     private const KEYS = [
         'site_name', 'tagline', 'phone', 'email', 'booking_notification_email',
-        'address', 'hero_heading', 'hero_subheading',
+        'address', 'hero_subheading',
         'facebook_url', 'instagram_url', 'whatsapp_number',
     ];
 
@@ -64,8 +64,6 @@ class ManageSettings extends Page
                     ]),
                 Section::make('Homepage')
                     ->components([
-                        TextInput::make('hero_heading')
-                            ->label('Hero heading'),
                         Textarea::make('hero_subheading')
                             ->label('Hero subheading')
                             ->rows(2),

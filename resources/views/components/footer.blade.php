@@ -1,8 +1,8 @@
 <footer class="bg-navy-950 text-white">
     <div class="container-site grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-            <a href="{{ route('home') }}" class="flex items-center gap-2" aria-label="Brit Travels home">
-                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-accent-400 font-display text-lg font-bold text-navy-950">B</span>
+            <a href="{{ route('home') }}" class="flex items-center gap-2.5" aria-label="Brit Travels home">
+                <img src="{{ asset('images/logo-mark-dark-bg.png') }}" alt="" class="h-9 w-auto">
                 <span class="font-display text-lg font-semibold tracking-tight">Brit<span class="text-accent-400">Travels</span></span>
             </a>
             <p class="mt-4 text-sm leading-relaxed text-white/60">

@@ -5,8 +5,8 @@
     {{-- Hero --}}
     <section class="relative overflow-hidden bg-navy-950 pb-24 pt-36 sm:pt-44 lg:pb-32">
         <div class="pointer-events-none absolute inset-0" aria-hidden="true">
-            <div class="absolute -right-52 -top-52 h-[34rem] w-[34rem] rounded-full bg-accent-500/10 blur-3xl"></div>
-            <div class="absolute -bottom-40 -left-40 h-[28rem] w-[28rem] rounded-full bg-navy-500/25 blur-3xl"></div>
+            <div class="absolute -right-52 -top-52 h-136 w-136 rounded-full bg-accent-500/10 blur-3xl"></div>
+            <div class="absolute -bottom-40 -left-40 h-112 w-md rounded-full bg-navy-500/25 blur-3xl"></div>
             <svg class="absolute inset-0 h-full w-full opacity-[0.04]" aria-hidden="true"><defs><pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0v48" fill="none" stroke="white" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/></svg>
         </div>
 
@@ -14,10 +14,11 @@
             <div class="max-w-3xl">
                 <p class="section-eyebrow" data-hero-reveal>Coach Hire Across the UK</p>
                 <h1 class="font-display text-4xl font-semibold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-7xl" data-hero-reveal>
-                    {{ setting('hero_heading', 'Travel Together, Travel Better') }}
+                    <span class="block">Travel Together</span>
+                    <span class="block">Travel Better</span>
                 </h1>
                 <p class="mt-6 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg" data-hero-reveal>
-                    {{ setting('hero_subheading', 'Modern coaches, professional drivers, and effortless booking — group travel across the UK made simple.') }}
+                    {{ setting('hero_subheading', 'Modern coaches, professional drivers, effortless booking and group travel across the UK made simple.') }}
                 </p>
                 <div class="mt-9 flex flex-wrap gap-4" data-hero-reveal>
                     <a href="{{ route('booking.create') }}" class="btn-primary">Book a Coach</a>
@@ -29,7 +30,7 @@
             <form
                 action="{{ route('booking.create') }}"
                 method="GET"
-                class="mt-14 grid gap-4 rounded-3xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur-lg sm:grid-cols-2 lg:grid-cols-5 lg:items-end"
+                class="mt-14 grid gap-4 rounded-3xl border border-white/10 bg-white/6 p-6 backdrop-blur-lg sm:grid-cols-2 lg:grid-cols-5 lg:items-end"
                 data-hero-reveal
                 aria-label="Quick booking"
             >
@@ -50,12 +51,15 @@
                 </div>
                 <div>
                     <label for="hero-date" class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-white/50">Pickup date</label>
-                    <input id="hero-date" name="pickup_date" type="date" min="{{ now()->toDateString() }}" class="w-full rounded-xl border border-white/15 bg-navy-900/80 px-4 py-3 text-sm text-white [color-scheme:dark] focus:border-accent-400 focus:outline-none">
+                    <input id="hero-date" name="pickup_date" type="date" min="{{ now()->toDateString() }}" class="w-full rounded-xl border border-white/15 bg-navy-900/80 px-4 py-3 text-sm text-white scheme-dark focus:border-accent-400 focus:outline-none">
                 </div>
                 <button type="submit" class="btn-primary w-full">Continue Booking</button>
             </form>
         </div>
     </section>
+
+    {{-- Scrolling marquee --}}
+    <x-marquee :items="['Book a Coach', 'Travel Together', 'Get a Free Quote', 'UK-Wide Coverage', '8–70 Seats']" />
 
     {{-- Why us --}}
     <section class="py-20 sm:py-28">
@@ -181,7 +185,7 @@
     {{-- CTA band --}}
     <section class="relative overflow-hidden bg-navy-950 py-20 sm:py-24">
         <div class="pointer-events-none absolute inset-0" aria-hidden="true">
-            <div class="absolute left-1/2 top-1/2 h-96 w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-500/10 blur-3xl"></div>
+            <div class="absolute left-1/2 top-1/2 h-96 w-160 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-500/10 blur-3xl"></div>
         </div>
         <div class="container-site relative text-center gsap-reveal">
             <h2 class="mx-auto max-w-2xl font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">Ready to get your group moving?</h2>

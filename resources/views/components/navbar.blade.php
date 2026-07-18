@@ -4,8 +4,8 @@
     class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
 >
     <nav class="container-site flex items-center justify-between py-4" aria-label="Main navigation">
-        <a href="{{ route('home') }}" class="flex items-center gap-2" aria-label="Brit Travels home">
-            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-accent-400 font-display text-lg font-bold text-navy-950">B</span>
+        <a href="{{ route('home') }}" class="flex items-center gap-2.5" aria-label="Brit Travels home">
+            <img src="{{ asset('images/logo-mark-dark-bg.png') }}" alt="" class="h-9 w-auto sm:h-10">
             <span class="font-display text-lg font-semibold tracking-tight text-white">Brit<span class="text-accent-400">Travels</span></span>
         </a>
 

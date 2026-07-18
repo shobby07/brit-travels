@@ -124,6 +124,39 @@
     .section-title {
         @apply font-display text-3xl font-semibold tracking-tight text-navy-950 sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1];
     }
+
+    /* Scrolling text banner — transform-only so it stays on the compositor */
+    .marquee {
+        @apply overflow-hidden select-none;
+    }
+
+    .marquee-track {
+        @apply flex w-max will-change-transform;
+        animation: marquee-scroll 28s linear infinite;
+    }
+
+    .marquee:hover .marquee-track {
+        animation-play-state: paused;
+    }
+
+    .marquee-group {
+        @apply flex shrink-0 items-center gap-8 pr-8 sm:gap-12 sm:pr-12;
+    }
+
+    @keyframes marquee-scroll {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .marquee-track {
+            animation: none;
+        }
+    }
 }
 
 @layer utilities {
