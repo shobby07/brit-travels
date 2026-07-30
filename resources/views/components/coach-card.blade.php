@@ -1,16 +1,55 @@
-@props(['coach'])
+@props(['coach', 'eager' => false])
+
+@php
+    $vehicleType = $coach->seats <= 16 ? 'minibus' : 'coach';
+    $altText = "{$coach->seats}-seat {$vehicleType} exterior, Brit Travel fleet";
+
+    $webpUrl = null;
+    $jpgUrl = null;
+    if ($coach->image && ! str_starts_with($coach->image, 'http')) {
+        $webpUrl = asset('storage/'.$coach->image);
+        $jpgUrl = asset('storage/'.\Illuminate\Support\Str::replaceLast('.webp', '.jpg', $coach->image));
+    } elseif ($coach->image) {
+        $jpgUrl = $coach->image;
+    }
+
+    $vehicleJsonLd = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Vehicle',
+        'name' => $coach->name,
+        'vehicleSeatingCapacity' => $coach->seats,
+        'url' => route('fleet.show', $coach),
+    ];
+    if ($jpgUrl) {
+        $vehicleJsonLd['image'] = $jpgUrl;
+    }
+    if ($coach->amenities) {
+        $vehicleJsonLd['additionalProperty'] = collect($coach->amenities)->map(fn ($amenity) => [
+            '@type' => 'PropertyValue',
+            'name' => $amenity,
+            'value' => true,
+        ])->all();
+    }
+@endphp
 
 <article class="group overflow-hidden rounded-3xl border border-navy-100 bg-white transition-all duration-300 hover:-translate-y-1.5 hover:border-navy-200 hover:shadow-xl hover:shadow-navy-900/10">
+    <script type="application/ld+json">{!! json_encode($vehicleJsonLd, JSON_UNESCAPED_SLASHES) !!}</script>
     <a href="{{ route('fleet.show', $coach) }}" class="block">
         <div class="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-navy-800 to-navy-950">
             @if ($coach->image)
-                <img
-                    src="{{ str_starts_with($coach->image, 'http') ? $coach->image : asset('storage/'.$coach->image) }}"
-                    alt="{{ $coach->name }} available for hire from Brit Travels"
-                    loading="lazy"
-                    width="640" height="400"
-                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                >
+                <picture>
+                    @if ($webpUrl)
+                        <source srcset="{{ $webpUrl }}" type="image/webp">
+                    @endif
+                    <img
+                        src="{{ $jpgUrl }}"
+                        alt="{{ $altText }}"
+                        loading="{{ $eager ? 'eager' : 'lazy' }}"
+                        @if ($eager) fetchpriority="high" @endif
+                        width="1101" height="688"
+                        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    >
+                </picture>
             @else
                 <div class="flex h-full w-full items-center justify-center p-10 text-navy-300 transition-transform duration-500 group-hover:scale-105">
                     <x-coach-illustration />

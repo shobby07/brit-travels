@@ -66,14 +66,14 @@
         <div class="container-site grid gap-14 lg:grid-cols-[1fr_1.3fr] lg:items-center lg:gap-20">
             <div class="gsap-reveal">
                 <p class="section-eyebrow text-accent-400">Why Brit Travels</p>
-                <h2 class="section-title uppercase" data-word-reveal>
+                <h2 class="section-title" data-word-reveal>
                     <span class="block">
                         @foreach (explode(' ', 'Every Seat') as $word)
                             <span class="inline-block overflow-hidden pb-1"><span class="reveal-word inline-block">{{ $word }}</span></span>
                         @endforeach
                     </span>
                     <span class="block text-navy-950">
-                        @foreach (explode(' ', 'on the right route') as $word)
+                        @foreach (explode(' ', 'On The Right Route') as $word)
                             <span class="inline-block overflow-hidden pb-1"><span class="reveal-word inline-block">{{ $word }}</span></span>
                         @endforeach
                     </span>
@@ -132,7 +132,18 @@
             <div class="flex flex-wrap items-end justify-between gap-6 gsap-reveal">
                 <div class="max-w-2xl">
                     <p class="section-eyebrow">Our Fleet</p>
-                    <h2 class="section-title">The right coach for every group size</h2>
+                    <h2 class="section-title" data-word-reveal>
+                    <span class="block">
+                        @foreach (explode(' ', 'Coach Hire And Minibus ') as $word)
+                            <span class="inline-block overflow-hidden pb-1"><span class="reveal-word inline-block">{{ $word }}</span></span>
+                        @endforeach
+                    </span>
+                    <span class="block text-navy-950">
+                        @foreach (explode(' ', 'Fleet For Every Group Size') as $word)
+                            <span class="inline-block overflow-hidden pb-1"><span class="reveal-word inline-block">{{ $word }}</span></span>
+                        @endforeach
+                    </span>
+                </h2>
                 </div>
                 <a href="{{ route('fleet.index') }}" class="btn-secondary">View Full Fleet</a>
             </div>
@@ -167,9 +178,9 @@
     @if ($testimonials->isNotEmpty())
         <section class="py-20 sm:py-28">
             <div class="container-site">
-                <div class="max-w-2xl gsap-reveal">
+                <div class="max-w-2xl mx-auto text-center gsap-reveal">
                     <p class="section-eyebrow">Testimonials</p>
-                    <h2 class="section-title">Trusted by schools, businesses &amp; event planners</h2>
+                    <h2 class="section-title">When the Journey Goes Right, People Remember It.</h2>
                 </div>
                 <div class="mt-14 grid gap-6 sm:grid-cols-2 gsap-stagger">
                     @foreach ($testimonials as $testimonial)

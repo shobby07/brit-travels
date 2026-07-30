@@ -51,17 +51,25 @@ class CoachForm
                     ->components([
                         FileUpload::make('image')
                             ->label('Main image')
+                            ->helperText('Name the file descriptively before uploading, e.g. 70-seater-coach-brit-travel.webp — the filename is kept as-is for SEO.')
                             ->image()
                             ->disk('public')
                             ->directory('coaches')
+                            ->getUploadedFileNameForStorageUsing(
+                                fn ($file) => Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$file->getClientOriginalExtension()
+                            )
                             ->imageEditor()
                             ->maxSize(4096),
                         FileUpload::make('gallery')
                             ->label('Gallery images')
+                            ->helperText('Name each file descriptively before uploading — filenames are kept as-is for SEO.')
                             ->image()
                             ->multiple()
                             ->disk('public')
                             ->directory('coaches/gallery')
+                            ->getUploadedFileNameForStorageUsing(
+                                fn ($file) => Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$file->getClientOriginalExtension()
+                            )
                             ->reorderable()
                             ->maxSize(4096),
                     ]),

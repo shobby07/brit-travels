@@ -42,13 +42,31 @@
         <div class="container-site grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
             <div class="gsap-reveal">
                 <div class="relative aspect-[16/10] overflow-hidden rounded-3xl bg-gradient-to-br from-navy-800 to-navy-950">
+                    @php
+                        $vehicleType = $coach->seats <= 16 ? 'minibus' : 'coach';
+                        $heroWebp = null;
+                        $heroJpg = null;
+                        if ($coach->image && ! str_starts_with($coach->image, 'http')) {
+                            $heroWebp = asset('storage/'.$coach->image);
+                            $heroJpg = asset('storage/'.\Illuminate\Support\Str::replaceLast('.webp', '.jpg', $coach->image));
+                        } elseif ($coach->image) {
+                            $heroJpg = $coach->image;
+                        }
+                    @endphp
                     @if ($coach->image)
-                        <img
-                            src="{{ str_starts_with($coach->image, 'http') ? $coach->image : asset('storage/'.$coach->image) }}"
-                            alt="{{ $coach->name }} available for hire from Brit Travels"
-                            width="960" height="600"
-                            class="h-full w-full object-cover"
-                        >
+                        <picture>
+                            @if ($heroWebp)
+                                <source srcset="{{ $heroWebp }}" type="image/webp">
+                            @endif
+                            <img
+                                src="{{ $heroJpg }}"
+                                alt="{{ $coach->seats }}-seat {{ $vehicleType }} exterior, Brit Travel fleet"
+                                loading="eager"
+                                fetchpriority="high"
+                                width="1101" height="688"
+                                class="h-full w-full object-cover"
+                            >
+                        </picture>
                     @else
                         <div class="flex h-full w-full items-center justify-center p-14 text-navy-300">
                             <x-coach-illustration />

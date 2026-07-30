@@ -12,7 +12,7 @@
         <div class="container-site">
             <div class="grid gap-7 sm:grid-cols-2 lg:grid-cols-3 gsap-stagger">
                 @foreach ($coaches as $coach)
-                    <x-coach-card :coach="$coach" />
+                    <x-coach-card :coach="$coach" :eager="$loop->first" />
                 @endforeach
             </div>
 
