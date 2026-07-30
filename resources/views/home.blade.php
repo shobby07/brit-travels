@@ -62,25 +62,64 @@
     <x-marquee :items="['Book a Coach', 'Travel Together', 'Get a Free Quote', 'UK-Wide Coverage', '8–70 Seats']" />
 
     {{-- Why us --}}
-    <section class="py-20 sm:py-28">
-        <div class="container-site">
-            <div class="max-w-2xl gsap-reveal">
-                <p class="section-eyebrow">Why Brit Travels</p>
-                <h2 class="section-title">Group travel without the group-travel headaches</h2>
+    <section class="overflow-hidden bg-navy-50/60 py-20 sm:py-28">
+        <div class="container-site grid gap-14 lg:grid-cols-[1fr_1.3fr] lg:items-center lg:gap-20">
+            <div class="gsap-reveal">
+                <p class="section-eyebrow text-accent-400">Why Brit Travels</p>
+                <h2 class="section-title uppercase" data-word-reveal>
+                    <span class="block">
+                        @foreach (explode(' ', 'Every Seat') as $word)
+                            <span class="inline-block overflow-hidden pb-1"><span class="reveal-word inline-block">{{ $word }}</span></span>
+                        @endforeach
+                    </span>
+                    <span class="block text-navy-950">
+                        @foreach (explode(' ', 'on the right route') as $word)
+                            <span class="inline-block overflow-hidden pb-1"><span class="reveal-word inline-block">{{ $word }}</span></span>
+                        @endforeach
+                    </span>
+                </h2>
+                <p class="mt-6 max-w-md font-display text-base  text-navy-950 sm:text-lg ">We make coach hire across the UK simple, reliable, and stress-free. From corporate travel and airport transfers to school trips and private events, our modern coaches and professional drivers ensure every journey is comfortable, punctual, and planned with care.</p>
+                <a href="{{ route('contact') }}" class="btn-primary mt-8">
+                    Get In Touch
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                </a>
             </div>
-            <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 gsap-stagger">
+
+            <div class="flex flex-col border-2 p-5 rounded-xl gsap-stagger" x-data="{ open: 0 }">
                 @foreach ([
-                    ['title' => 'Easy Online Booking', 'text' => 'Book in under two minutes — choose one-way or round trip, tell us where and when, and we handle the rest.', 'icon' => 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
-                    ['title' => 'Professional Drivers', 'text' => 'Every journey comes with a fully licensed, DBS-checked driver who knows UK roads inside out.', 'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'],
-                    ['title' => 'Modern Fleet', 'text' => 'From 8-seat executive minibuses to 70-seat touring coaches — air-conditioned, comfortable, and maintained to the highest standard.', 'icon' => 'M8.25 18.75a1.5 1.5 0 01-3 0m12 0a1.5 1.5 0 01-3 0M3.75 6.75h16.5M3.75 6.75v10.5h16.5V6.75M3.75 12h16.5'],
-                    ['title' => 'Transparent Pricing', 'text' => 'Free same-day quotations with no hidden extras. Budget-friendly rates for schools, businesses, and private groups.', 'icon' => 'M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
-                ] as $feature)
-                    <div class="rounded-3xl border border-navy-100 bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-navy-900/5">
-                        <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-50 text-accent-600">
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $feature['icon'] }}"/></svg>
-                        </span>
-                        <h3 class="mt-5 font-display text-lg font-semibold text-navy-950">{{ $feature['title'] }}</h3>
-                        <p class="mt-2 text-sm leading-relaxed text-navy-600">{{ $feature['text'] }}</p>
+                    ['title' => 'Easy Online Booking', 'text' => 'Book in under two minutes — choose one-way or round trip, tell us where and when, and we handle the rest.'],
+                    ['title' => 'Professional Drivers', 'text' => 'Every journey comes with a fully licensed, DBS-checked driver who knows UK roads inside out.'],
+                    ['title' => 'Modern Fleet', 'text' => 'From 8-seat executive minibuses to 70-seat touring coaches — air-conditioned, comfortable, and maintained to the highest standard.'],
+                    ['title' => 'Transparent Pricing', 'text' => 'Free same-day quotations with no hidden extras. Budget-friendly rates for schools, businesses, and private groups.'],
+                ] as $i => $feature)
+                    <div class="flex gap-4  {{ $loop->last ? '' : 'pb-3' }}">
+                        <div class="flex w-14 shrink-0 flex-col items-center">
+                            <span
+                                class="flex shrink-0 items-center justify-center rounded-full font-display font-bold transition-all duration-300"
+                                :class="open === {{ $i }} ? 'h-14 w-14 bg-white text-accent-600 text-lg shadow-lg shadow-black/20' : 'h-2.5 w-2.5 bg-navy-300'"
+                            >
+                                <span x-show="open === {{ $i }}" x-cloak>{{ $i + 1 }}</span>
+                            </span>
+                            @unless ($loop->last)
+                                <span class="mt-1 w-px flex-1 bg-navy-300"></span>
+                            @endunless
+                        </div>
+                        <div class="flex-1 overflow-hidden bg-navy-950 rounded-2xl self-start">
+                            <button type="button" @click="open = open === {{ $i }} ? null : {{ $i }}" class="flex w-full items-center justify-between gap-4 px-6 py-5 text-left">
+                                <span class="font-display text-base font-bold text-white">{{ $feature['title'] }}</span>
+                                <span class="shrink-0 font-display font-semibold text-lg text-white" x-text="open === {{ $i }} ? '−' : '+'"></span>
+                            </button>
+                            <div
+                                x-show="open === {{ $i }}"
+                                x-transition:enter="transition ease-out duration-250"
+                                x-transition:enter-start="opacity-0"
+                                x-transition:enter-end="opacity-100"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100"
+                                x-transition:leave-end="opacity-0"
+                                class="px-6 pb-5 text-sm leading-relaxed text-blue-300"
+                            >{{ $feature['text'] }}</div>
+                        </div>
                     </div>
                 @endforeach
             </div>

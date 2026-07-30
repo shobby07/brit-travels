@@ -166,5 +166,9 @@
         [data-hero-reveal] {
             opacity: 0;
         }
+
+        .reveal-word {
+            opacity: 0;
+        }
     }
 }

@@ -103,9 +103,26 @@ if (!prefersReducedMotion) {
             { opacity: 1, y: 0, duration: 1, stagger: 0.15, ease: 'power3.out', delay: 0.15 },
         );
     }
+
+    // Word-by-word heading reveal: <h2 data-word-reveal><span class="reveal-word">word</span>...</h2>
+    document.querySelectorAll('[data-word-reveal]').forEach((heading) => {
+        const words = heading.querySelectorAll('.reveal-word');
+        gsap.fromTo(
+            words,
+            { opacity: 0, y: '100%' },
+            {
+                opacity: 1,
+                y: '0%',
+                duration: 0.7,
+                stagger: 0.08,
+                ease: 'power3.out',
+                scrollTrigger: { trigger: heading, start: 'top 85%', once: true },
+            },
+        );
+    });
 } else {
     // Reduced motion: ensure everything is visible
-    document.querySelectorAll('.gsap-reveal, [data-hero-reveal]').forEach((el) => {
+    document.querySelectorAll('.gsap-reveal, [data-hero-reveal], .reveal-word').forEach((el) => {
         el.style.opacity = '1';
     });
     document.querySelectorAll('[data-counter]').forEach((el) => {
