@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CoachHireController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FleetController;
 use App\Http\Controllers\HomeController;
@@ -15,6 +16,9 @@ Route::get('/', HomeController::class)->name('home');
 
 Route::get('/fleet', [FleetController::class, 'index'])->name('fleet.index');
 Route::get('/fleet/{coach}', [FleetController::class, 'show'])->name('fleet.show');
+
+Route::get('/coach-hire', [CoachHireController::class, 'index'])->name('coach-hire.index');
+Route::get('/coach-hire/{location:slug}', [CoachHireController::class, 'show'])->name('coach-hire.show');
 
 Route::get('/book', [BookingController::class, 'create'])->name('booking.create');
 Route::post('/book', [BookingController::class, 'store'])

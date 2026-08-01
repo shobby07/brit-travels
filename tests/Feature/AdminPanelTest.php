@@ -21,7 +21,7 @@ class AdminPanelTest extends TestCase
     {
         $admin = User::factory()->create();
 
-        foreach (['/admin', '/admin/bookings', '/admin/quotes', '/admin/coaches', '/admin/testimonials', '/admin/faqs', '/admin/manage-settings'] as $path) {
+        foreach (['/admin', '/admin/bookings', '/admin/quotes', '/admin/coaches', '/admin/coach-hire-locations', '/admin/testimonials', '/admin/faqs', '/admin/manage-settings'] as $path) {
             $this->actingAs($admin)->get($path)->assertOk();
         }
     }

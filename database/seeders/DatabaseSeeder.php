@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->seedTestimonials();
         $this->seedFaqs();
         $this->seedSettings();
+
+        $this->call(CoachHireLocationSeeder::class);
     }
 
     private function seedAdmin(): void

@@ -70,5 +70,7 @@
     </main>
 
     <x-footer />
+
+    <x-scroll-to-top />
 </body>
 </html>

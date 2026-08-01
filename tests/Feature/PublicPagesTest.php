@@ -15,7 +15,7 @@ class PublicPagesTest extends TestCase
 
     public function test_all_public_pages_load(): void
     {
-        foreach (['home', 'fleet.index', 'booking.create', 'quote.create', 'about', 'testimonials', 'faq', 'contact', 'terms', 'sitemap'] as $routeName) {
+        foreach (['home', 'fleet.index', 'coach-hire.index', 'booking.create', 'quote.create', 'about', 'testimonials', 'faq', 'contact', 'terms', 'sitemap'] as $routeName) {
             $this->get(route($routeName))->assertOk();
         }
     }

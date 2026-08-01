@@ -10,9 +10,13 @@ Alpine.start();
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Module-scoped so features outside this block (e.g. the scroll-to-top button)
+// can reuse the same Lenis instance. Stays null under reduced motion.
+let lenis = null;
+
 if (!prefersReducedMotion) {
     // Smooth scrolling
-    const lenis = new Lenis({
+    lenis = new Lenis({
         duration: 1.1,
         smoothWheel: true,
     });
@@ -138,4 +142,53 @@ if (navbar) {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+}
+
+// Scroll-to-top button with a scroll-progress ring
+const scrollTopBtn = document.getElementById('scroll-to-top');
+if (scrollTopBtn) {
+    const ring = document.getElementById('scroll-to-top-ring');
+    const circumference = 2 * Math.PI * 23; // ring radius = 23 (see the SVG)
+    if (ring) {
+        ring.style.strokeDasharray = String(circumference);
+        ring.style.strokeDashoffset = String(circumference);
+    }
+
+    let ticking = false;
+    const update = () => {
+        ticking = false;
+        const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+        const scrollable = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const progress = scrollable > 0 ? Math.min(Math.max(scrollTop / scrollable, 0), 1) : 0;
+        if (ring) {
+            ring.style.strokeDashoffset = String(circumference * (1 - progress));
+        }
+        scrollTopBtn.classList.toggle('is-visible', scrollTop > 300);
+    };
+    const requestUpdate = () => {
+        if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+        }
+    };
+
+    // Prefer Lenis's scroll event when smooth scrolling is active; otherwise
+    // (e.g. under prefers-reduced-motion, where Lenis is never created) fall
+    // back to a passive scroll listener. rAF throttles the ring update.
+    if (lenis) {
+        lenis.on('scroll', requestUpdate);
+    } else {
+        window.addEventListener('scroll', requestUpdate, { passive: true });
+    }
+    window.addEventListener('resize', requestUpdate, { passive: true });
+
+    scrollTopBtn.addEventListener('click', () => {
+        if (lenis && !prefersReducedMotion) {
+            lenis.scrollTo(0, { duration: 1.1 });
+        } else {
+            window.scrollTo({ top: 0, behavior: 'auto' });
+        }
+    });
+
+    update(); // set initial ring + visibility state
 }

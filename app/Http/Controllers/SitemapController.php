@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coach;
+use App\Models\CoachHireLocation;
 
 class SitemapController extends Controller
 {
@@ -11,6 +12,7 @@ class SitemapController extends Controller
         $staticRoutes = [
             ['loc' => route('home'), 'priority' => '1.0'],
             ['loc' => route('fleet.index'), 'priority' => '0.9'],
+            ['loc' => route('coach-hire.index'), 'priority' => '0.9'],
             ['loc' => route('booking.create'), 'priority' => '0.9'],
             ['loc' => route('quote.create'), 'priority' => '0.9'],
             ['loc' => route('about'), 'priority' => '0.7'],
@@ -26,7 +28,13 @@ class SitemapController extends Controller
             'lastmod' => $coach->updated_at?->toAtomString(),
         ]);
 
-        $urls = collect($staticRoutes)->concat($coaches);
+        $locations = CoachHireLocation::active()->get()->map(fn (CoachHireLocation $location) => [
+            'loc' => route('coach-hire.show', $location),
+            'priority' => '0.8',
+            'lastmod' => $location->updated_at?->toAtomString(),
+        ]);
+
+        $urls = collect($staticRoutes)->concat($coaches)->concat($locations);
 
         return response()
             ->view('sitemap', ['urls' => $urls])

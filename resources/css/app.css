@@ -172,3 +172,16 @@
         }
     }
 }
+
+/* Scroll-to-top button: JS toggles .is-visible as the visitor scrolls.
+   Unlayered so it reliably overrides the base utility classes. */
+#scroll-to-top.is-visible {
+    @apply pointer-events-auto translate-y-0 opacity-100;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /* Fade only — no upward slide — for reduced-motion users. */
+    #scroll-to-top {
+        @apply translate-y-0 transition-opacity;
+    }
+}

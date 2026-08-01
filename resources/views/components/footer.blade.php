@@ -8,10 +8,38 @@
             <p class="mt-4 text-sm leading-relaxed text-white/60">
                 {{ setting('tagline', 'Premium coach hire across the UK') }}. Modern fleet, professional drivers, and effortless booking for groups of every size.
             </p>
+
+            {{-- Social links: amber squares with a macOS-dock-style hover pop (Tailwind transform + transition only) --}}
+            <div class="mt-5 flex items-center gap-3">
+                <a
+                    href="https://facebook.com/brittravels"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook"
+                    class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-400 text-white shadow-sm transition duration-150 ease-out hover:-translate-y-1 hover:scale-110 hover:bg-accent-500 focus-visible:-translate-y-1 focus-visible:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400 motion-reduce:transition-none"
+                >
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                    </svg>
+                </a>
+                <a
+                    href="https://instagram.com/brittravels"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-400 text-white shadow-sm transition duration-150 ease-out hover:-translate-y-1 hover:scale-110 hover:bg-accent-500 focus-visible:-translate-y-1 focus-visible:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400 motion-reduce:transition-none"
+                >
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="2" y="2" width="20" height="20" rx="5"/>
+                        <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                    </svg>
+                </a>
+            </div>
         </div>
 
         <nav aria-label="Footer quick links">
-            <h2 class="font-display text-sm font-semibold uppercase tracking-wider text-white/40">Quick Links</h2>
+            <h2 class="font-display text-sm font-semibold uppercase tracking-wider text-white">Quick Links</h2>
             <ul class="mt-4 space-y-3 text-sm">
                 <li><a href="{{ route('booking.create') }}" class="text-white/70 transition-colors hover:text-accent-400">Book a Coach</a></li>
                 <li><a href="{{ route('quote.create') }}" class="text-white/70 transition-colors hover:text-accent-400">Get a Quote</a></li>
@@ -23,7 +51,7 @@
         </nav>
 
         <nav aria-label="Footer fleet links">
-            <h2 class="font-display text-sm font-semibold uppercase tracking-wider text-white/40">Popular Coaches</h2>
+            <h2 class="font-display text-sm font-semibold uppercase tracking-wider text-white">Popular Coaches</h2>
             <ul class="mt-4 space-y-3 text-sm">
                 @foreach (\App\Models\Coach::active()->take(5)->get() as $coach)
                     <li><a href="{{ route('fleet.show', $coach) }}" class="text-white/70 transition-colors hover:text-accent-400">{{ $coach->name }} Hire</a></li>
@@ -32,7 +60,7 @@
         </nav>
 
         <div>
-            <h2 class="font-display text-sm font-semibold uppercase tracking-wider text-white/40">Contact</h2>
+            <h2 class="font-display text-sm font-semibold uppercase tracking-wider text-white">Company Information</h2>
             <ul class="mt-4 space-y-3 text-sm text-white/70">
                 @if (setting('phone'))
                     <li>
@@ -57,7 +85,8 @@
     </div>
 
     <div class="border-t border-white/10">
-        <div class="container-site flex flex-col items-center justify-between gap-3 py-6 text-xs text-white/40 sm:flex-row">
+        {{-- Extra right padding keeps this row clear of the floating scroll-to-top button --}}
+        <div class="container-site flex flex-col items-center justify-between gap-3 py-6 pr-6 text-xs text-white/40 sm:flex-row sm:pr-20">
             <p>&copy; {{ now()->year }} {{ setting('site_name', 'Brit Travels') }}. All rights reserved.</p>
             <p>Coach hire &amp; minibus hire across the United Kingdom.</p>
         </div>
