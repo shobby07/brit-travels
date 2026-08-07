@@ -10,5 +10,5 @@ Your reference: **{{ $quote->reference }}**
 If you'd like to add anything, just reply to this email and quote your reference.
 
 Safe travels,<br>
-The {{ \App\Models\Setting::get('site_name', 'Brit Travels') }} Team
+The {{ \App\Models\Setting::get('site_name', 'Brit Travel') }} Team
 </x-mail::message>

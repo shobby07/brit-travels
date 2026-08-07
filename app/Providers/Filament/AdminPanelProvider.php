@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName('Brit Travels Admin')
+            ->brandName('Brit Travel Admin')
             ->colors([
                 'primary' => Color::Amber,
             ])

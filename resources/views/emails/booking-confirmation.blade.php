@@ -10,5 +10,5 @@ Your reference: **{{ $booking->reference }}**
 If anything above looks wrong, just reply to this email or call us on {{ \App\Models\Setting::get('phone') }} and quote your reference.
 
 Safe travels,<br>
-The {{ \App\Models\Setting::get('site_name', 'Brit Travels') }} Team
+The {{ \App\Models\Setting::get('site_name', 'Brit Travel') }} Team
 </x-mail::message>

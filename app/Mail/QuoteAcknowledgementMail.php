@@ -21,7 +21,7 @@ class QuoteAcknowledgementMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Your quotation request {$this->quote->reference} — Brit Travels",
+            subject: "Your quotation request {$this->quote->reference} — Brit Travel",
         );
     }
 

@@ -1,11 +1,11 @@
 <x-layout
-    title="Testimonials — What Our Customers Say"
-    description="Read reviews from schools, businesses, wedding planners and sports clubs who trust Brit Travels for coach hire across the UK."
+    title="Testimonials | What Our Customers Say"
+    description="Read reviews from schools, businesses, wedding planners and sports clubs who trust Brit Travel for coach hire across the UK."
 >
     <x-page-header
         eyebrow="Testimonials"
         title="Don't just take our word for it"
-        subtitle="Schools, businesses, and event organisers across the UK trust Brit Travels to get their groups where they need to be."
+        subtitle="Schools, businesses, and event organisers across the UK trust Brit Travel to get their groups where they need to be."
     />
 
     <section class="py-16 sm:py-24">

@@ -1,6 +1,6 @@
 <x-layout
-    title="FAQ — Coach Hire Questions Answered"
-    description="Answers to the most common questions about coach hire with Brit Travels: booking, pricing, drivers, cancellations, accessibility and more."
+    title="FAQ | Coach Hire Questions Answered"
+    description="Answers to the most common questions about coach hire with Brit Travel: booking, pricing, drivers, cancellations, accessibility and more."
 >
     <x-slot:head>
         <script type="application/ld+json">
@@ -26,7 +26,7 @@
     <x-page-header
         eyebrow="FAQ"
         title="Frequently asked questions"
-        subtitle="Everything you need to know about booking and travelling with Brit Travels. Can't find your answer? Just get in touch."
+        subtitle="Everything you need to know about booking and travelling with Brit Travel. Can't find your answer? Just get in touch."
     />
 
     <section class="py-16 sm:py-24">

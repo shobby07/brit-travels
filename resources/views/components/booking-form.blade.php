@@ -1,7 +1,17 @@
 @props(['coaches', 'pickup' => null, 'compact' => false])
 
 @php
-    $startStep = $errors->hasAny(['name', 'email', 'phone', 'notes']) ? 2 : 1;
+    // Reopen on step 2 when any field that now lives there failed validation.
+    $startStep = $errors->hasAny([
+        'name', 'email', 'phone',
+        'passengers', 'bags_medium', 'luggage_small', 'luggage_large',
+    ]) ? 2 : 1;
+
+    // Repopulate the via-stop rows after a failed submit.
+    $oldVias = array_values(array_filter(
+        (array) old('via_routes', []),
+        fn ($stop) => is_string($stop) && trim($stop) !== '',
+    ));
     // In a narrow sticky sidebar we stack fields into a single column; the
     // full-width /book page keeps the two-column layout.
     $fieldGrid = $compact ? '' : 'sm:grid-cols-2';
@@ -12,6 +22,7 @@
     x-data="bookingForm({
         step: {{ $startStep }},
         tripType: '{{ old('trip_type', request('trip_type', 'one_way')) }}',
+        vias: {{ Illuminate\Support\Js::from($oldVias) }},
     })"
     class="rounded-3xl border border-navy-100 bg-white shadow-xl shadow-navy-900/5 {{ $pad }}"
 >
@@ -79,6 +90,50 @@
                     <input id="dropoff_location" name="dropoff_location" type="text" required placeholder="e.g. Manchester City Centre" value="{{ old('dropoff_location', request('dropoff_location')) }}" class="field-input">
                     @error('dropoff_location')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
+
+                {{-- Optional intermediate stops. Rows are added/removed client-side;
+                     blanks are stripped server-side so an empty row is harmless. --}}
+                <div class="sm:col-span-2">
+                    <label class="field-label">Via stops (optional)</label>
+                    <div class="space-y-2.5">
+                        <template x-for="(stop, index) in vias" :key="index">
+                            <div class="flex items-center gap-2">
+                                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-navy-50 font-display text-xs font-bold text-navy-500" x-text="index + 1"></span>
+                                <input
+                                    type="text"
+                                    name="via_routes[]"
+                                    x-model="vias[index]"
+                                    maxlength="255"
+                                    placeholder="e.g. Birmingham New Street"
+                                    class="field-input"
+                                    :aria-label="'Via stop ' + (index + 1)"
+                                >
+                                <button
+                                    type="button"
+                                    @click="removeVia(index)"
+                                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-navy-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500"
+                                    :aria-label="'Remove via stop ' + (index + 1)"
+                                >
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+                    <button
+                        type="button"
+                        @click="addVia()"
+                        x-show="vias.length < 10"
+                        :class="vias.length ? 'mt-2.5' : ''"
+                        class="flex items-center gap-2 rounded-full bg-navy-50 py-2.5 pl-2.5 pr-5 text-sm font-semibold text-navy-700 transition-colors hover:bg-navy-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500"
+                    >
+                        <span class="flex h-7 w-7 items-center justify-center rounded-full bg-white text-navy-500">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                        </span>
+                        Add destination
+                    </button>
+                    @error('via_routes')<p class="field-error">{{ $message }}</p>@enderror
+                    @error('via_routes.*')<p class="field-error">{{ $message }}</p>@enderror
+                </div>
                 <div>
                     <label for="pickup_date" class="field-label">Pickup date *</label>
                     <input id="pickup_date" name="pickup_date" type="date" required min="{{ now()->toDateString() }}" value="{{ old('pickup_date', request('pickup_date')) }}" class="field-input">
@@ -104,11 +159,6 @@
                     </div>
                 </template>
                 <div>
-                    <label for="passengers" class="field-label">Number of passengers *</label>
-                    <input id="passengers" name="passengers" type="number" required min="1" max="500" value="{{ old('passengers') }}" class="field-input">
-                    @error('passengers')<p class="field-error">{{ $message }}</p>@enderror
-                </div>
-                <div>
                     <label for="coach_id" class="field-label">Preferred coach (optional)</label>
                     <select id="coach_id" name="coach_id" class="field-input">
                         <option value="">Let us recommend</option>
@@ -131,24 +181,49 @@
             <div class="grid gap-5 {{ $fieldGrid }}">
                 <div class="sm:col-span-2">
                     <label for="name" class="field-label">Full name *</label>
-                    <input id="name" name="name" type="text" required value="{{ old('name') }}" class="field-input">
+                    <input id="name" name="name" type="text" required placeholder="Enter Your Full Name" value="{{ old('name') }}" class="field-input">
                     @error('name')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label for="email" class="field-label">Email address *</label>
-                    <input id="email" name="email" type="email" required value="{{ old('email') }}" class="field-input">
+                    <input id="email" name="email" type="email" required placeholder="Enter Your Email" value="{{ old('email') }}" class="field-input">
                     @error('email')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label for="phone" class="field-label">Phone number *</label>
-                    <input id="phone" name="phone" type="tel" required value="{{ old('phone') }}" class="field-input">
+                    {{-- data-phone-intl turns this into a flag + dial-code picker (see app.js).
+                         Without JS it degrades to a plain tel input. --}}
+                    <input id="phone" name="phone" type="tel" required placeholder="Enter Your Mobile Number" value="{{ old('phone') }}" class="field-input" data-phone-intl>
                     @error('phone')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
-                <div class="sm:col-span-2">
-                    <label for="notes" class="field-label">Notes for our team (optional)</label>
-                    <textarea id="notes" name="notes" rows="4" placeholder="Luggage, accessibility needs, multiple pickups, special occasions…" class="field-input">{{ old('notes') }}</textarea>
-                    @error('notes')<p class="field-error">{{ $message }}</p>@enderror
-                </div>
+
+                {{-- Each cell is a flex column so the inputs stay on one baseline
+                     even if a label wraps at narrow widths. --}}
+                <fieldset class="sm:col-span-2">
+                    <legend class="field-label">Passengers &amp; luggage</legend>
+                    <div class="grid grid-cols-2 gap-4 {{ $compact ? '' : 'sm:grid-cols-4' }}">
+                        <div class="flex flex-col">
+                            <label for="passengers" class="field-sublabel">Passengers *</label>
+                            <input id="passengers" name="passengers" type="number" required min="1" max="500" placeholder="0" value="{{ old('passengers') }}" class="field-input mt-auto">
+                            @error('passengers')<p class="field-error">{{ $message }}</p>@enderror
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="bags_medium" class="field-sublabel">Medium bags</label>
+                            <input id="bags_medium" name="bags_medium" type="number" min="0" max="999" placeholder="0" value="{{ old('bags_medium') }}" class="field-input mt-auto">
+                            @error('bags_medium')<p class="field-error">{{ $message }}</p>@enderror
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="luggage_small" class="field-sublabel">Small luggage</label>
+                            <input id="luggage_small" name="luggage_small" type="number" min="0" max="999" placeholder="0" value="{{ old('luggage_small') }}" class="field-input mt-auto">
+                            @error('luggage_small')<p class="field-error">{{ $message }}</p>@enderror
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="luggage_large" class="field-sublabel">Large luggage</label>
+                            <input id="luggage_large" name="luggage_large" type="number" min="0" max="999" placeholder="0" value="{{ old('luggage_large') }}" class="field-input mt-auto">
+                            @error('luggage_large')<p class="field-error">{{ $message }}</p>@enderror
+                        </div>
+                    </div>
+                </fieldset>
             </div>
 
             <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true">
@@ -167,9 +242,16 @@
 
 <script>
     document.addEventListener('alpine:init', () => {
-        Alpine.data('bookingForm', ({ step, tripType }) => ({
+        Alpine.data('bookingForm', ({ step, tripType, vias }) => ({
             step,
             tripType,
+            vias,
+            addVia() {
+                if (this.vias.length < 10) this.vias.push('');
+            },
+            removeVia(index) {
+                this.vias.splice(index, 1);
+            },
             nextStep() {
                 const fields = this.$refs.step1.querySelectorAll('input, select');
                 for (const field of fields) {

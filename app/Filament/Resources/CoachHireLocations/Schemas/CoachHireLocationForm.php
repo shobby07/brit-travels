@@ -53,10 +53,10 @@ class CoachHireLocationForm
                     ->components([
                         FileUpload::make('hero_image')
                             ->label('Hero image')
-                            ->helperText('Upload a WebP if you can, sized around 1600×700. Name the file descriptively before uploading, e.g. coach-hire-london-tower-bridge.webp — the filename is kept as-is for SEO.')
+                            ->helperText('Upload a WebP if you can, sized around 1600×700. Name the file descriptively before uploading, e.g. coach-hire-london-tower-bridge.webp — the filename is kept as-is for SEO. Saved to public/images/hero alongside the seeded photos.')
                             ->image()
-                            ->disk('public')
-                            ->directory('coach-hire-locations')
+                            ->disk('public_assets')
+                            ->directory('images/hero')
                             ->getUploadedFileNameForStorageUsing(
                                 fn ($file) => Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$file->getClientOriginalExtension()
                             )
@@ -66,9 +66,9 @@ class CoachHireLocationForm
                             ->label('Image alt text')
                             ->helperText('Describes the photo for screen readers and image search, e.g. "Coach hire in central London near Tower Bridge".'),
                         TextInput::make('hero_image_credit')
-                            ->label('Image credit')
+                            ->label('Image credit (record only)')
                             ->columnSpanFull()
-                            ->helperText('Photo attribution shown subtly over the image. Required for licences such as CC BY / CC BY-SA. Basic HTML links are allowed, e.g. Photo © Jane Doe (CC BY-SA 3.0). Leave blank for your own photography.'),
+                            ->helperText('Kept as your licensing record for this photo — it is not displayed on the page. Fill it in for licences such as CC BY / CC BY-SA, e.g. Photo © Jane Doe (CC BY-SA 3.0). Leave blank for your own photography.'),
                     ]),
                 Section::make('Why choose us')
                     ->description('The bullet points that make this location unique. Aim for 3–5.')

@@ -1,4 +1,4 @@
-# Deploying Brit Travels to SiteGround
+# Deploying Brit Travel to SiteGround
 
 This guide takes the site from this folder to live on **https://brittravel.co.uk**.
 
@@ -66,7 +66,7 @@ Laravel must serve from its `public/` folder. On SiteGround:
 Edit `.env` on the server:
 
 ```env
-APP_NAME="Brit Travels"
+APP_NAME="Brit Travel"
 APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://brittravel.co.uk
@@ -87,7 +87,7 @@ MAIL_SCHEME=smtps
 MAIL_USERNAME=info@brittravel.co.uk
 MAIL_PASSWORD=your_mailbox_password
 MAIL_FROM_ADDRESS="info@brittravel.co.uk"
-MAIL_FROM_NAME="Brit Travels"
+MAIL_FROM_NAME="Brit Travel"
 ```
 
 ## 7. Run the setup commands (via SSH)

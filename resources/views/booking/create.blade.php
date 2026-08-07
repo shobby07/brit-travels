@@ -1,6 +1,6 @@
 <x-layout
     title="Book a Coach Online"
-    description="Book a coach or minibus online with Brit Travels in under two minutes. One-way or round trip, 8 to 70 seats, professional driver included."
+    description="Book a coach or minibus online with Brit Travel in under two minutes. One-way or round trip, 8 to 70 seats, professional driver included."
 >
     <x-page-header
         eyebrow="Online Booking"

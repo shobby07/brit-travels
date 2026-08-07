@@ -4,7 +4,6 @@
     'subtitle' => null,
     'image' => null,
     'imageAlt' => null,
-    'imageCredit' => null,
 ])
 
 @php
@@ -14,32 +13,37 @@
     // variants (…-1024, …-640) are used when present so phones don't download
     // the full 1600px image; a single-file admin upload still works (the
     // existence checks simply skip the missing variants — no broken requests).
+    //
+    // Heroes are self-hosted under public/images/hero — both the seeded photos
+    // and admin uploads — so paths resolve straight against the document root
+    // and survive a fresh checkout without the storage symlink.
     $webpSrcset = [];
     $jpgSrcset = [];
     $heroFallback = null;
 
     if ($image && ! str_starts_with($image, 'http')) {
-        $ext = pathinfo($image, PATHINFO_EXTENSION);
-        $baseNoExt = $ext ? Str::beforeLast($image, '.'.$ext) : $image;
+        $relative = ltrim($image, '/');
+        $ext = pathinfo($relative, PATHINFO_EXTENSION);
+        $baseNoExt = $ext ? Str::beforeLast($relative, '.'.$ext) : $relative;
 
         foreach ([640, 1024, 1600] as $w) {
             $suffix = $w === 1600 ? '' : "-{$w}";
             $webpRel = $baseNoExt.$suffix.'.webp';
             $jpgRel = $baseNoExt.$suffix.'.jpg';
-            if (is_file(public_path('storage/'.$webpRel))) {
-                $webpSrcset[] = asset('storage/'.$webpRel)." {$w}w";
+            if (is_file(public_path($webpRel))) {
+                $webpSrcset[] = asset($webpRel)." {$w}w";
             }
-            if (is_file(public_path('storage/'.$jpgRel))) {
-                $jpgSrcset[] = asset('storage/'.$jpgRel)." {$w}w";
+            if (is_file(public_path($jpgRel))) {
+                $jpgSrcset[] = asset($jpgRel)." {$w}w";
             }
         }
 
-        if (is_file(public_path('storage/'.$baseNoExt.'.jpg'))) {
-            $heroFallback = asset('storage/'.$baseNoExt.'.jpg');
-        } elseif (is_file(public_path('storage/'.$baseNoExt.'.webp'))) {
-            $heroFallback = asset('storage/'.$baseNoExt.'.webp');
+        if (is_file(public_path($baseNoExt.'.jpg'))) {
+            $heroFallback = asset($baseNoExt.'.jpg');
+        } elseif (is_file(public_path($baseNoExt.'.webp'))) {
+            $heroFallback = asset($baseNoExt.'.webp');
         } else {
-            $heroFallback = asset('storage/'.$image);
+            $heroFallback = asset($relative);
         }
     } elseif ($image) {
         $heroFallback = $image;
@@ -67,9 +71,6 @@
             {{-- Contrast overlay so headline text stays readable over the photo --}}
             <div class="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/85 to-navy-950/50" aria-hidden="true"></div>
             <div class="absolute inset-0 bg-navy-950/30" aria-hidden="true"></div>
-            @if ($imageCredit)
-                <p class="absolute bottom-2 right-3 z-10 text-[10px] leading-tight text-white/45 [&_a]:underline hover:[&_a]:text-white/70">{!! $imageCredit !!}</p>
-            @endif
         </div>
     @else
         <div class="pointer-events-none absolute inset-0" aria-hidden="true">

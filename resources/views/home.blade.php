@@ -1,6 +1,6 @@
 <x-layout
     :title="null"
-    description="Premium coach hire and minibus hire across the UK. Modern fleet from 8 to 70 seats, professional drivers, free quotes, and instant online booking with Brit Travels."
+    description="Premium coach hire and minibus hire across the UK. Modern fleet from 8 to 70 seats, professional drivers, free quotes, and instant online booking with Brit Travel."
 >
     {{-- Hero --}}
     <section class="relative overflow-hidden bg-navy-950 pb-24 pt-36 sm:pt-44 lg:pb-32">
@@ -65,7 +65,7 @@
     <section class="overflow-hidden bg-navy-50/60 py-20 sm:py-28">
         <div class="container-site grid gap-14 lg:grid-cols-[1fr_1.3fr] lg:items-center lg:gap-20">
             <div class="gsap-reveal">
-                <p class="section-eyebrow text-accent-400">Why Brit Travels</p>
+                <p class="section-eyebrow text-accent-400">Why Brit Travel</p>
                 <h2 class="section-title" data-word-reveal>
                     <span class="block">
                         @foreach (explode(' ', 'Every Seat') as $word)
@@ -117,7 +117,7 @@
                                 x-transition:leave="transition ease-in duration-150"
                                 x-transition:leave-start="opacity-100"
                                 x-transition:leave-end="opacity-0"
-                                class="px-6 pb-5 text-sm leading-relaxed text-blue-300"
+                                class="px-6 pb-5 text-sm leading-relaxed text-white"
                             >{{ $feature['text'] }}</div>
                         </div>
                     </div>
@@ -214,7 +214,7 @@
                 <div class="gsap-reveal">
                     <p class="section-eyebrow">FAQs</p>
                     <h2 class="section-title">Questions? We've got answers</h2>
-                    <p class="mt-4 text-sm leading-relaxed text-navy-600">Everything you need to know about booking, pricing, and travelling with Brit Travels.</p>
+                    <p class="mt-4 text-sm leading-relaxed text-navy-600">Everything you need to know about booking, pricing, and travelling with Brit Travel.</p>
                     <a href="{{ route('faq') }}" class="btn-secondary mt-7">View All FAQs</a>
                 </div>
                 <div class="space-y-4 gsap-stagger">
@@ -238,8 +238,10 @@
             <div class="absolute left-1/2 top-1/2 h-96 w-160 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-500/10 blur-3xl"></div>
         </div>
         <div class="container-site relative text-center gsap-reveal">
-            <h2 class="mx-auto max-w-2xl font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">Ready to get your group moving?</h2>
-            <p class="mx-auto mt-4 max-w-xl text-white/60">Free, no-obligation quotes — usually the same day. Or book online in under two minutes.</p>
+            {{-- max-w-5xl keeps the headline on a single line at lg; text-balance evens
+                 out the wrap on narrower screens instead of orphaning the last word --}}
+            <h2 class="mx-auto max-w-5xl text-balance font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">Ready to get your group moving?</h2>
+            <p class="mx-auto mt-4 max-w-xl text-balance text-white/60">Get a free quote today and let Brit Travel handle the rest.</p>
             <div class="mt-9 flex flex-wrap justify-center gap-4">
                 <a href="{{ route('booking.create') }}" class="btn-primary">Book a Coach</a>
                 <a href="{{ route('quote.create') }}" class="btn-ghost-light">Get a Free Quote</a>

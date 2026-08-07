@@ -56,7 +56,8 @@ class BookingsTable
                 TextColumn::make('passengers')
                     ->label('Pax')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->description(fn (Booking $record) => $record->luggageSummary()),
                 TextColumn::make('coach.name')
                     ->label('Coach')
                     ->placeholder('—')

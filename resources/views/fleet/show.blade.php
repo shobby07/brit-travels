@@ -1,6 +1,6 @@
 <x-layout
     :title="$coach->meta_title ?? $coach->name.' Hire UK'"
-    :description="$coach->meta_description ?? 'Hire a '.$coach->seats.' seater coach with a professional driver anywhere in the UK. Free instant quote from Brit Travels.'"
+    :description="$coach->meta_description ?? 'Hire a '.$coach->seats.' seater coach with a professional driver anywhere in the UK. Free instant quote from Brit Travel.'"
 >
     <x-slot:head>
         <script type="application/ld+json">

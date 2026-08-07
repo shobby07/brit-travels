@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Bookings\Schemas;
 use App\Models\Booking;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
@@ -49,6 +50,11 @@ class BookingForm
                         TextInput::make('dropoff_location')
                             ->label('Drop-off location')
                             ->required(),
+                        TagsInput::make('via_routes')
+                            ->label('Via stops')
+                            ->placeholder('Add a stop and press enter')
+                            ->helperText('Intermediate stops between pickup and drop-off, in order.')
+                            ->columnSpanFull(),
                         DatePicker::make('pickup_date')
                             ->required(),
                         TimePicker::make('pickup_time')
@@ -59,10 +65,34 @@ class BookingForm
                         TimePicker::make('return_time')
                             ->seconds(false)
                             ->visible(fn ($get) => $get('trip_type') === 'round_trip'),
+                    ]),
+                Section::make('Passengers & luggage')
+                    ->description('Collected on the booking form so the right sized vehicle is assigned.')
+                    ->columns(4)
+                    ->components([
                         TextInput::make('passengers')
                             ->required()
                             ->numeric()
-                            ->minValue(1),
+                            ->minValue(1)
+                            ->maxValue(500),
+                        TextInput::make('bags_medium')
+                            ->label('Medium bags')
+                            ->numeric()
+                            ->minValue(0)
+                            ->maxValue(999)
+                            ->default(0),
+                        TextInput::make('luggage_small')
+                            ->label('Small luggage')
+                            ->numeric()
+                            ->minValue(0)
+                            ->maxValue(999)
+                            ->default(0),
+                        TextInput::make('luggage_large')
+                            ->label('Large luggage')
+                            ->numeric()
+                            ->minValue(0)
+                            ->maxValue(999)
+                            ->default(0),
                     ]),
                 Section::make('Customer')
                     ->columns(2)

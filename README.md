@@ -1,4 +1,4 @@
-# Brit Travels — Coach Hire Website
+# Brit Travel — Coach Hire Website
 
 Modern, SEO-optimized coach hire website with online booking, quotation requests, and a full admin dashboard. Built for **https://brittravel.co.uk**, hosted on SiteGround.
 

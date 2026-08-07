@@ -1,18 +1,18 @@
 <x-layout
     title="Terms of Engagement"
-    description="Brit Travels terms of engagement covering bookings, payments, amendments, cancellations, passenger conduct, and liability for coach hire services."
+    description="Brit Travel terms of engagement covering bookings, payments, amendments, cancellations, passenger conduct, and liability for coach hire services."
 >
     <x-page-header
         eyebrow="Legal"
         title="Terms of Engagement"
-        subtitle="The terms that apply when you book with Brit Travels. Please read them before confirming your booking."
+        subtitle="The terms that apply when you book with Brit Travel. Please read them before confirming your booking."
     />
 
     <section class="py-16 sm:py-24">
         <div class="container-site max-w-3xl">
             <div class="space-y-10 text-[15px] leading-relaxed text-navy-700">
                 @foreach ([
-                    ['title' => '1. Bookings', 'body' => 'All bookings are subject to availability and are only confirmed once you receive a confirmation email from Brit Travels quoting your booking reference. Submitting a booking request through our website does not constitute a confirmed booking.'],
+                    ['title' => '1. Bookings', 'body' => 'All bookings are subject to availability and are only confirmed once you receive a confirmation email from Brit Travel quoting your booking reference. Submitting a booking request through our website does not constitute a confirmed booking.'],
                     ['title' => '2. Quotations', 'body' => 'Quotations are free and valid for 14 days from the date of issue unless otherwise stated. Prices may vary depending on final trip details, including changes to dates, times, pickup or drop-off locations, and passenger numbers.'],
                     ['title' => '3. Payment', 'body' => 'Payment terms will be set out in your booking confirmation. Unless otherwise agreed, payment must be received in full before the date of travel.'],
                     ['title' => '4. Amendments', 'body' => 'We will always try to accommodate amendments free of charge. Significant changes (such as route, date, or vehicle size) may affect the price. Please notify us of any changes as early as possible, quoting your booking reference.'],

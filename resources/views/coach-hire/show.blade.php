@@ -43,7 +43,7 @@
 
 <x-layout
     :title="$location->meta_title ?? 'Coach Hire '.$location->name"
-    :description="$location->meta_description ?? 'Coach and minibus hire in '.$location->name.' with professional drivers. Airport transfers, event travel, weddings and day trips. Free instant quote from Brit Travels.'"
+    :description="$location->meta_description ?? 'Coach and minibus hire in '.$location->name.' with professional drivers. Airport transfers, event travel, weddings and day trips. Free instant quote from Brit Travel.'"
     :canonical="route('coach-hire.show', $location)"
 >
     <x-slot:head>
@@ -59,7 +59,6 @@
         :title="$location->intro_heading ?? 'Coach Hire '.$location->name"
         :image="$location->hero_image"
         :imageAlt="$location->hero_image_alt ?? ('Coach hire in '.$location->name)"
-        :imageCredit="$location->hero_image_credit"
     >
         <div class="mt-8 flex flex-wrap gap-4" data-hero-reveal>
             <a href="#book" class="btn-primary">Get a Quote for {{ $location->name }}</a>
@@ -104,7 +103,7 @@
                 @if (! empty($location->why_choose_points))
                     <div id="why-choose" class="mt-16 scroll-mt-28">
                         <div class="gsap-reveal">
-                            <p class="section-eyebrow">Why Brit Travels</p>
+                            <p class="section-eyebrow">Why Brit Travel</p>
                             <h2 class="font-display text-2xl font-semibold tracking-tight text-navy-950 sm:text-3xl">Coach hire in {{ $location->name }}, done properly</h2>
                         </div>
                         <div class="mt-8 grid gap-5 sm:grid-cols-2 gsap-stagger">

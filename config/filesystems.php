@@ -47,6 +47,18 @@ return [
             'report' => false,
         ],
 
+        // Served straight from the document root, no storage symlink involved.
+        // Used for assets that are committed with the app — location hero
+        // photos live under images/hero so they survive a fresh deploy.
+        'public_assets' => [
+            'driver' => 'local',
+            'root' => public_path(),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/'),
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

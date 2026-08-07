@@ -1,4 +1,4 @@
-# Brit Travels — Day-by-Day Launch Roadmap
+# Brit Travel — Day-by-Day Launch Roadmap
 Fixes → Content → SEO → Optimization → SiteGround Hosting
 Prepared: July 16, 2026
 

@@ -1,6 +1,6 @@
 <x-layout
-    title="Contact Us — Coach Hire Enquiries"
-    description="Get in touch with Brit Travels for coach hire enquiries, bookings, and quotations. Call, email, or send us a message — we usually reply within a few hours."
+    title="Contact Us | Coach Hire Enquiries"
+    description="Get in touch with Brit Travel for coach hire enquiries, bookings, and quotations. Call, email, or send us a message — we usually reply within a few hours."
 >
     <x-page-header
         eyebrow="Contact"

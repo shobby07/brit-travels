@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'admin@brittravel.co.uk'],
             [
-                'name' => 'Brit Travels Admin',
+                'name' => 'Brit Travel Admin',
                 'password' => Hash::make(env('ADMIN_SEED_PASSWORD', 'ChangeMe!2026')),
             ],
         );
@@ -100,8 +100,8 @@ class DatabaseSeeder extends Seeder
                     'amenities' => $coach['amenities'],
                     'sort_order' => $index,
                     'is_active' => true,
-                    'meta_title' => "{$coach['name']} Hire UK | Brit Travels",
-                    'meta_description' => "Hire a {$coach['seats']} seater ".($coach['seats'] >= 24 ? 'coach' : 'minibus')." with a professional driver anywhere in the UK. Free instant quote from Brit Travels.",
+                    'meta_title' => "{$coach['name']} Hire UK | Brit Travel",
+                    'meta_description' => "Hire a {$coach['seats']} seater ".($coach['seats'] >= 24 ? 'coach' : 'minibus')." with a professional driver anywhere in the UK. Free instant quote from Brit Travel.",
                 ],
             );
         }
@@ -110,8 +110,8 @@ class DatabaseSeeder extends Seeder
     private function seedTestimonials(): void
     {
         $testimonials = [
-            ['author' => 'Sarah Mitchell', 'role' => 'School Trip Organiser', 'quote' => 'Brit Travels made our school trip completely stress-free. The coach was spotless, the driver was brilliant with the kids, and everything ran exactly on time.', 'rating' => 5],
-            ['author' => 'James Whitfield', 'role' => 'Corporate Events Manager', 'quote' => 'We use Brit Travels for all our company shuttles. Professional drivers, modern coaches, and booking is effortless. Highly recommended.', 'rating' => 5],
+            ['author' => 'Sarah Mitchell', 'role' => 'School Trip Organiser', 'quote' => 'Brit Travel made our school trip completely stress-free. The coach was spotless, the driver was brilliant with the kids, and everything ran exactly on time.', 'rating' => 5],
+            ['author' => 'James Whitfield', 'role' => 'Corporate Events Manager', 'quote' => 'We use Brit Travel for all our company shuttles. Professional drivers, modern coaches, and booking is effortless. Highly recommended.', 'rating' => 5],
             ['author' => 'Priya Sharma', 'role' => 'Wedding Planner', 'quote' => 'They transported 120 wedding guests across three pickups without a single hitch. The quotation was fast and very reasonable.', 'rating' => 5],
             ['author' => 'David Lawson', 'role' => 'Sports Club Coordinator', 'quote' => 'Reliable every single weekend for our away fixtures. The team loves the comfortable seats and USB charging on longer trips.', 'rating' => 5],
         ];
@@ -127,9 +127,9 @@ class DatabaseSeeder extends Seeder
     private function seedFaqs(): void
     {
         $faqs = [
-            ['question' => 'How do I book a coach with Brit Travels?', 'answer' => 'Simply use our online booking form — choose one-way or round trip, enter your pickup and drop-off locations, date and time, and your contact details. We\'ll confirm your booking by email, usually within a few hours.'],
-            ['question' => 'How much does coach hire cost?', 'answer' => 'Prices depend on distance, duration, date, and coach size. Use the "Get a Quote" button and we\'ll send you a free, no-obligation quotation — usually the same day.'],
-            ['question' => 'Do your coaches come with a driver?', 'answer' => 'Yes — every hire includes a fully licensed, DBS-checked professional driver. All our drivers are experienced with UK routes and group travel.'],
+            ['question' => 'How do I book a coach with Brit Travel?', 'answer' => 'Simply use our online booking form. Choose one-way or round trip, enter your pickup and drop-off locations, date and time, and your contact details. We\'ll confirm your booking by email, usually within a few hours.'],
+            ['question' => 'How much does coach hire cost?', 'answer' => 'Prices depend on distance, duration, date, and coach size. Use the "Get a Quote" button and we\'ll send you a free, no-obligation quotation usually the same day.'],
+            ['question' => 'Do your coaches come with a driver?', 'answer' => 'Yes, every hire includes a fully licensed, DBS-checked professional driver. All our drivers are experienced with UK routes and group travel.'],
             ['question' => 'Can I amend or cancel my booking?', 'answer' => 'Yes. Contact us as early as possible and we\'ll amend your booking free of charge where we can. Cancellation terms are set out in our Terms of Engagement.'],
             ['question' => 'What size groups can you accommodate?', 'answer' => 'Our fleet ranges from 8-seater minibuses to 70-seater coaches, so we can cover everything from an executive airport transfer to a full school year group. For larger groups we can supply multiple vehicles.'],
             ['question' => 'Do you provide coaches for airport transfers?', 'answer' => 'Yes — we cover all major UK airports including Heathrow, Gatwick, Manchester, and Birmingham, with meet-and-greet available on request.'],
@@ -147,8 +147,8 @@ class DatabaseSeeder extends Seeder
     private function seedSettings(): void
     {
         $settings = [
-            'site_name' => 'Brit Travels',
-            'tagline' => 'Premium coach hire across the UK',
+            'site_name' => 'Brit Travel',
+            'tagline' => 'Experience the ease and convenience of booking a coach with Brit Travel.',
             'phone' => '+44 0000 000000',
             'email' => 'info@brittravel.co.uk',
             'booking_notification_email' => 'info@brittravel.co.uk',

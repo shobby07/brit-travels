@@ -6,9 +6,9 @@
 ])
 
 @php
-    $siteName = setting('site_name', 'Brit Travels');
-    $pageTitle = $title ? "{$title} | {$siteName}" : "{$siteName} | Coach Hire & Minibus Hire Across the UK";
-    $pageDescription = $description ?? 'Premium coach and minibus hire across the UK. Modern fleet from 8 to 70 seats, professional drivers, and instant online booking with Brit Travels.';
+    $siteName = setting('site_name', 'Brit Travel');
+    $pageTitle = $title ? "{$title} | {$siteName}" : "{$siteName} | Coach Hire UK";
+    $pageDescription = $description ?? 'Premium coach and minibus hire across the UK. Modern fleet from 8 to 70 seats, professional drivers, and instant online booking with Brit Travel.';
     $pageCanonical = $canonical ?? url()->current();
 @endphp
 

@@ -1,6 +1,6 @@
 <x-layout
-    title="Our Fleet — Coach & Minibus Hire from 8 to 70 Seats"
-    description="Explore the Brit Travels fleet: modern coaches and minibuses from 8 to 70 seats, all with professional drivers. Find the right vehicle for your group and book online."
+    title="Our Fleet | Coach & Minibus Hire from 8 to 70 Seats"
+    description="Explore the Brit Travel fleet: modern coaches and minibuses from 8 to 70 seats, all with professional drivers. Find the right vehicle for your group and book online."
 >
     <x-page-header
         eyebrow="Our Fleet"

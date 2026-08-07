@@ -1,12 +1,12 @@
 <footer class="bg-navy-950 text-white">
     <div class="container-site grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-            <a href="{{ route('home') }}" class="flex items-center gap-2.5" aria-label="Brit Travels home">
+            <a href="{{ route('home') }}" class="flex items-center gap-2.5" aria-label="Brit Travel home">
                 <img src="{{ asset('images/logo-mark-dark-bg.png') }}" alt="" class="h-9 w-auto">
-                <span class="font-display text-lg font-semibold tracking-tight">Brit<span class="text-accent-400">Travels</span></span>
+                <span class="font-display text-lg font-semibold tracking-tight">Brit<span class="text-accent-400">Travel</span></span>
             </a>
             <p class="mt-4 text-sm leading-relaxed text-white/60">
-                {{ setting('tagline', 'Premium coach hire across the UK') }}. Modern fleet, professional drivers, and effortless booking for groups of every size.
+                {{ setting('tagline', 'Experience the ease and convenience of booking a coach with Brit Travel.') }}
             </p>
 
             {{-- Social links: amber squares with a macOS-dock-style hover pop (Tailwind transform + transition only) --}}
@@ -84,10 +84,12 @@
         </div>
     </div>
 
-    <div class="border-t border-white/10">
-        {{-- Extra right padding keeps this row clear of the floating scroll-to-top button --}}
-        <div class="container-site flex flex-col items-center justify-between gap-3 py-6 pr-6 text-xs text-white/40 sm:flex-row sm:pr-20">
-            <p>&copy; {{ now()->year }} {{ setting('site_name', 'Brit Travels') }}. All rights reserved.</p>
+    <div class="container-site">
+        {{-- Divider sits inside the container so it lines up with the columns above
+             rather than bleeding to the viewport edges. Extra right padding keeps
+             the text clear of the floating scroll-to-top button. --}}
+        <div class="flex flex-col items-center justify-between gap-3 border-t border-white/10 py-6 pr-6 text-xs text-white/40 sm:flex-row sm:pr-20">
+            <p>&copy; {{ now()->year }} {{ setting('site_name', 'Brit Travel') }}. All rights reserved.</p>
             <p>Coach hire &amp; minibus hire across the United Kingdom.</p>
         </div>
     </div>

@@ -24,11 +24,15 @@ class Booking extends Model
         'trip_type',
         'pickup_location',
         'dropoff_location',
+        'via_routes',
         'pickup_date',
         'pickup_time',
         'return_date',
         'return_time',
         'passengers',
+        'luggage_small',
+        'bags_medium',
+        'luggage_large',
         'coach_id',
         'name',
         'email',
@@ -43,6 +47,11 @@ class Booking extends Model
         return [
             'pickup_date' => 'date',
             'return_date' => 'date',
+            'via_routes' => 'array',
+            'passengers' => 'integer',
+            'luggage_small' => 'integer',
+            'bags_medium' => 'integer',
+            'luggage_large' => 'integer',
         ];
     }
 
@@ -63,5 +72,20 @@ class Booking extends Model
     public function isRoundTrip(): bool
     {
         return $this->trip_type === 'round_trip';
+    }
+
+    /**
+     * Human-readable luggage breakdown, e.g. "2 small · 1 medium · 3 large".
+     * Returns null when nothing was declared, so callers can skip the row.
+     */
+    public function luggageSummary(): ?string
+    {
+        $parts = array_filter([
+            $this->luggage_small ? "{$this->luggage_small} small" : null,
+            $this->bags_medium ? "{$this->bags_medium} medium" : null,
+            $this->luggage_large ? "{$this->luggage_large} large" : null,
+        ]);
+
+        return $parts ? implode(' · ', $parts) : null;
     }
 }

@@ -15,7 +15,7 @@ class CoachHireLocationTest extends TestCase
         return CoachHireLocation::create(array_merge([
             'name' => 'Bath',
             'slug' => 'bath',
-            'meta_title' => 'Coach Hire Bath | Brit Travels',
+            'meta_title' => 'Coach Hire Bath | Brit Travel',
             'meta_description' => 'Coach hire in Bath with professional drivers.',
             'intro_heading' => 'Coach Hire in Bath',
             'intro_content' => "First paragraph about Bath.\n\nSecond paragraph about the Roman Baths.",
@@ -70,10 +70,10 @@ class CoachHireLocationTest extends TestCase
 
     public function test_hero_image_renders_responsive_webp_with_dimensions_and_alt(): void
     {
-        // Uses a real fetched image (present in storage) so the responsive
-        // srcset is built from its width variants.
+        // Uses a real self-hosted image (committed under public/images/hero) so
+        // the responsive srcset is built from its width variants.
         $location = $this->makeLocation([
-            'hero_image' => 'coach-hire-locations/london.webp',
+            'hero_image' => 'images/hero/london-tower-bridge.webp',
             'hero_image_alt' => 'Coach hire in central London near Tower Bridge',
         ]);
 
@@ -85,7 +85,24 @@ class CoachHireLocationTest extends TestCase
             ->assertSee('sizes="100vw"', false)
             ->assertSee('width="1600" height="700"', false)
             ->assertSee('fetchpriority="high"', false)
-            ->assertSee('alt="Coach hire in central London near Tower Bridge"', false);
+            ->assertSee('alt="Coach hire in central London near Tower Bridge"', false)
+            ->assertSee('images/hero/london-tower-bridge', false)   // self-hosted, not hotlinked
+            ->assertDontSee('upload.wikimedia.org', false);
+    }
+
+    public function test_hero_does_not_paint_a_photo_credit_over_the_image(): void
+    {
+        $location = $this->makeLocation([
+            'hero_image' => 'images/hero/london-tower-bridge.webp',
+            'hero_image_credit' => 'Photo &copy; Fuzzypiggy &middot; CC BY-SA 3.0 via Wikimedia Commons',
+        ]);
+
+        // The credit is kept on the record for licensing purposes, but the
+        // watermark overlay is gone from the rendered hero.
+        $this->get(route('coach-hire.show', $location))
+            ->assertOk()
+            ->assertDontSee('via Wikimedia Commons', false)
+            ->assertDontSee('Fuzzypiggy', false);
     }
 
     public function test_page_falls_back_gracefully_without_a_hero_image(): void
@@ -149,9 +166,9 @@ class CoachHireLocationTest extends TestCase
 
         $london = CoachHireLocation::where('slug', 'london')->firstOrFail();
 
-        // The fetched WebP is present in storage, so the seeder links it up
-        // together with descriptive alt text and a licence credit.
-        $this->assertSame('coach-hire-locations/london.webp', $london->hero_image);
+        // The self-hosted WebP is committed to the repo, so the seeder links it
+        // up together with descriptive alt text and a licence credit.
+        $this->assertSame('images/hero/london-tower-bridge.webp', $london->hero_image);
         $this->assertNotEmpty($london->hero_image_alt);
         $this->assertStringContainsString('Wikimedia Commons', $london->hero_image_credit);
     }

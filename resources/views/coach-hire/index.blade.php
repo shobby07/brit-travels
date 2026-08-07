@@ -1,11 +1,11 @@
 <x-layout
-    title="Coach Hire by Location — City Coach & Minibus Hire Across the UK"
+    title="Coach Hire by Location | City Coach & Minibus Hire Across the UK"
     description="Local coach and minibus hire with professional drivers across the UK. Choose your city for airport transfers, event travel, weddings, day trips and corporate coach hire."
 >
     <x-page-header
         eyebrow="Coach Hire by Location"
         title="Local coach hire, wherever your group starts"
-        subtitle="From airport transfers and stadium days to weddings and scenic tours — pick your city to see how Brit Travels covers coach and minibus hire in your area."
+        subtitle="From airport transfers and stadium days to weddings and scenic tours — pick your city to see how Brit Travel covers coach and minibus hire in your area."
     />
 
     <section class="py-16 sm:py-24">

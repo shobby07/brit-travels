@@ -113,6 +113,11 @@
         @apply w-full rounded-xl border border-navy-200 bg-white px-4 py-3 text-sm text-navy-900 placeholder:text-navy-300 transition-colors focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-400/30;
     }
 
+    /* Smaller label for fields grouped under a shared legend (e.g. luggage counts) */
+    .field-sublabel {
+        @apply mb-1.5 block text-xs font-medium text-navy-600;
+    }
+
     .field-error {
         @apply mt-1.5 text-xs font-medium text-red-600;
     }
@@ -184,4 +189,51 @@
     #scroll-to-top {
         @apply translate-y-0 transition-opacity;
     }
+}
+
+/* International phone input (intl-tel-input) on the booking form.
+   The library wraps the <input> in .iti, so the wrapper — not just the input —
+   has to stretch, and the flag/dial-code button needs to sit inside our border.
+   Unlayered so these win over the library's own stylesheet. */
+.iti {
+    @apply block w-full;
+}
+
+.iti__tel-input {
+    @apply w-full;
+}
+
+.iti--separate-dial-code .iti__selected-country,
+.iti__country-container {
+    @apply rounded-l-xl;
+}
+
+.iti__selected-country {
+    @apply bg-transparent transition-colors hover:bg-navy-50 focus:bg-navy-50;
+}
+
+.iti__dropdown-content {
+    @apply overflow-hidden rounded-xl border border-navy-200 bg-white text-sm text-navy-900 shadow-xl shadow-navy-900/10;
+}
+
+.iti__search-input {
+    @apply border-0 border-b border-navy-100 px-4 py-2.5 text-sm text-navy-900 placeholder:text-navy-300 focus:outline-none;
+}
+
+.iti__country-list {
+    @apply max-h-64;
+}
+
+.iti__country {
+    @apply px-4 py-2 text-sm text-navy-800;
+}
+
+.iti__country.iti__highlight,
+.iti__country:hover {
+    @apply bg-accent-50 text-navy-950;
+}
+
+.iti__dial-code,
+.iti__selected-dial-code {
+    @apply text-navy-500;
 }

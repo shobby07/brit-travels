@@ -1,6 +1,6 @@
 <x-layout
     title="Get a Free Coach Hire Quote"
-    description="Request a free, no-obligation coach hire quotation from Brit Travels. Tell us about your trip and we'll price it up — usually the same day."
+    description="Request a free, no-obligation coach hire quotation from Brit Travel. Tell us about your trip and we'll price it up — usually the same day."
 >
     <x-page-header
         eyebrow="Free Quotation"

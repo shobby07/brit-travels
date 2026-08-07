@@ -1,9 +1,9 @@
 <x-layout
-    title="About Us — UK Coach Hire Specialists"
-    description="Brit Travels is a UK coach hire company offering modern vehicles, professional drivers, and stress-free group travel for schools, businesses, weddings, and tours."
+    title="About Us | UK Coach Hire Specialists"
+    description="Brit Travel is a UK coach hire company offering modern vehicles, professional drivers, and stress-free group travel for schools, businesses, weddings, and tours."
 >
     <x-page-header
-        eyebrow="About Brit Travels"
+        eyebrow="About Brit Travel"
         title="Group travel, done properly"
         subtitle="We believe hiring a coach should be as easy as booking a taxi — clear prices, quick answers, and vehicles that turn up on time, every time."
     />
@@ -14,7 +14,7 @@
                 <p class="section-eyebrow">Our Story</p>
                 <h2 class="section-title">Built around one simple idea: make group travel effortless</h2>
                 <div class="mt-6 space-y-4 text-[15px] leading-relaxed text-navy-600">
-                    <p>Brit Travels was founded to take the stress out of moving groups of people around the UK. Whether it's a school year group heading to a museum, a company shuttling staff between sites, or a wedding party travelling between venues — we handle the logistics so you can focus on the day itself.</p>
+                    <p>Brit Travel was founded to take the stress out of moving groups of people around the UK. Whether it's a school year group heading to a museum, a company shuttling staff between sites, or a wedding party travelling between venues — we handle the logistics so you can focus on the day itself.</p>
                     <p>Our fleet spans everything from executive 8-seater minibuses to full-size 70-seat touring coaches, all maintained to the highest standard and driven by fully licensed, DBS-checked professionals.</p>
                     <p>We keep our pricing transparent, our quotations fast, and our booking process simple. That's why schools, businesses, sports clubs, and event planners across the country trust us again and again.</p>
                 </div>

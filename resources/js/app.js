@@ -2,6 +2,8 @@ import Alpine from 'alpinejs';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import intlTelInput from 'intl-tel-input';
+import 'intl-tel-input/styles';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -192,3 +194,25 @@ if (scrollTopBtn) {
 
     update(); // set initial ring + visibility state
 }
+
+// International phone inputs: flag + dial-code picker on [data-phone-intl].
+// The visible field holds just the national number; on submit we swap in the
+// full E.164 value so the server stores e.g. +447123456789. If the utils
+// bundle hasn't loaded yet we leave whatever the visitor typed alone.
+document.querySelectorAll('input[data-phone-intl]').forEach((input) => {
+    const iti = intlTelInput(input, {
+        initialCountry: 'gb',
+        countryOrder: ['gb', 'ie'],
+        separateDialCode: true,
+        strictMode: true,
+        loadUtils: () => import('intl-tel-input/utils'),
+    });
+
+    const form = input.closest('form');
+    if (!form) return;
+
+    form.addEventListener('submit', () => {
+        const full = iti.getNumber();
+        if (full) input.value = full;
+    });
+});

@@ -4,9 +4,9 @@
     class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
 >
     <nav class="container-site flex items-center justify-between py-4" aria-label="Main navigation">
-        <a href="{{ route('home') }}" class="flex items-center gap-2.5" aria-label="Brit Travels home">
+        <a href="{{ route('home') }}" class="flex items-center gap-2.5" aria-label="Brit Travel home">
             <img src="{{ asset('images/logo-mark-dark-bg.png') }}" alt="" class="h-9 w-auto sm:h-10">
-            <span class="font-display text-lg font-semibold tracking-tight text-white">Brit<span class="text-accent-400">Travels</span></span>
+            <span class="font-display text-lg font-semibold tracking-tight text-white">Brit<span class="text-accent-400">Travel</span></span>
         </a>
 
         {{-- Desktop links --}}
