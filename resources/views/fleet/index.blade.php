@@ -6,6 +6,8 @@
         eyebrow="Our Fleet"
         title="A coach for every kind of journey"
         subtitle="From executive 8-seater minibuses to 70-seat touring coaches — every vehicle is modern, air-conditioned, and driven by a licensed professional."
+        image="images/hero/fleet-motorway-night.webp"
+        imageAlt="Long-exposure light trails from traffic on a motorway at night"
     />
 
     <section class="py-16 sm:py-24">

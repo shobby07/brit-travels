@@ -156,15 +156,16 @@
                 @endif
             </div>
 
-            {{-- RIGHT: sticky quote form (inline on mobile, sticky from lg up) --}}
+            {{-- RIGHT: short teaser form that hands off to /book
+                 (inline on mobile, floats alongside the article from lg up) --}}
             <aside id="book" class="scroll-mt-28">
                 <div class="gsap-reveal lg:sticky lg:top-24" data-reveal="right">
                     <div class="mb-5">
                         <p class="section-eyebrow">Instant Quote</p>
                         <h2 class="font-display text-2xl font-semibold tracking-tight text-navy-950">Book coach hire in {{ $location->name }}</h2>
-                        <p class="mt-2 text-sm leading-relaxed text-navy-600">We've set {{ $location->name }} as your pickup to save you a step — change it any time.</p>
+                        <p class="mt-2 text-sm leading-relaxed text-navy-600">Three quick details and we'll take you straight to the booking form, with {{ $location->name }} already filled in.</p>
                     </div>
-                    <x-booking-form :coaches="$coaches" :pickup="$location->name" :compact="true" />
+                    <x-quick-booking-form :pickup="$location->name" />
                 </div>
             </aside>
         </div>

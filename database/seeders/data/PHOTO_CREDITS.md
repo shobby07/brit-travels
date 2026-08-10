@@ -16,6 +16,13 @@ publish these images without a visible credit, add one somewhere reachable from
 the pages that use them (a footer or /credits page), or swap in photography you
 own outright.
 
+## Fleet page hero (/fleet)
+- Subject: motorway light trails at night
+- Local file: public/images/hero/fleet-motorway-night.webp (+ .jpg, -1024, -640)
+- Author: Cris Ovalle (@crisovalle)
+- Licence: Unsplash License — free for commercial use, **no attribution required**
+- Source: https://unsplash.com/photos/time-lapse-photography-of-lighted-road-at-night-YTk8tO3PGdA
+
 ## London
 - Landmark: Tower Bridge
 - Local file: public/images/hero/london-tower-bridge.webp (+ .jpg, -1024, -640)

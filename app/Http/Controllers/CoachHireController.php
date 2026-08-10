@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Coach;
 use App\Models\CoachHireLocation;
 
 class CoachHireController extends Controller
@@ -18,9 +17,10 @@ class CoachHireController extends Controller
     {
         abort_unless($location->is_active, 404);
 
+        // The sidebar now shows a three-field teaser that hands off to /book,
+        // so the full coach list is no longer needed here.
         return view('coach-hire.show', [
             'location' => $location,
-            'coaches' => Coach::active()->get(),
             'others' => CoachHireLocation::active()->whereKeyNot($location->id)->get(),
         ]);
     }

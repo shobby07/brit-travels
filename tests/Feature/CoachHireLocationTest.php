@@ -58,7 +58,7 @@ class CoachHireLocationTest extends TestCase
             ->assertSee('rel="canonical"', false);
     }
 
-    public function test_location_page_prefills_booking_form_with_city(): void
+    public function test_location_page_prefills_quick_form_with_city(): void
     {
         $location = $this->makeLocation();
 
@@ -66,6 +66,34 @@ class CoachHireLocationTest extends TestCase
             ->assertOk()
             ->assertSee('name="pickup_location"', false)
             ->assertSee('value="Bath"', false);
+    }
+
+    public function test_location_sidebar_shows_only_the_three_field_teaser(): void
+    {
+        $location = $this->makeLocation();
+
+        $this->get(route('coach-hire.show', $location))
+            ->assertOk()
+            // Hands off to /book by GET rather than posting a booking itself.
+            ->assertSee('action="'.route('booking.create').'" method="GET"', false)
+            ->assertSee('name="dropoff_location"', false)
+            ->assertSee('name="pickup_date"', false)
+            // The long-form fields now live on /book only.
+            ->assertDontSee('name="passengers"', false)
+            ->assertDontSee('name="via_routes[]"', false);
+    }
+
+    public function test_quick_form_values_carry_through_to_the_booking_form(): void
+    {
+        $this->get(route('booking.create', [
+            'pickup_location' => 'Bath',
+            'dropoff_location' => 'Bristol Temple Meads',
+            'pickup_date' => now()->addDays(5)->toDateString(),
+        ]))
+            ->assertOk()
+            ->assertSee('value="Bath"', false)
+            ->assertSee('value="Bristol Temple Meads"', false)
+            ->assertSee('value="'.now()->addDays(5)->toDateString().'"', false);
     }
 
     public function test_hero_image_renders_responsive_webp_with_dimensions_and_alt(): void
