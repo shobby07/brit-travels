@@ -91,13 +91,28 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($coaches as $index => $coach) {
+            $slug = str($coach['name'])->slug();
+
+            // Fleet photo: self-hosted under public/images/coaches so it ships
+            // with the repo rather than depending on the storage disk, which is
+            // wiped on every deploy on an ephemeral host. Only wire it up if the
+            // file is really there, so a checkout without the images falls back
+            // cleanly to the illustration. Admins can replace any photo from the
+            // panel (those uploads go to the configured filesystem disk).
+            $photo = "images/coaches/{$slug}-brit-travel.webp";
+            $image = is_file(public_path($photo)) ? $photo : null;
+
+            // Never clobber a photo the admin has already uploaded by re-seeding.
+            $image = Coach::where('slug', $slug)->value('image') ?: $image;
+
             Coach::updateOrCreate(
-                ['slug' => str($coach['name'])->slug()],
+                ['slug' => $slug],
                 [
                     'name' => $coach['name'],
                     'seats' => $coach['seats'],
                     'description' => $coach['description'],
                     'amenities' => $coach['amenities'],
+                    'image' => $image,
                     'sort_order' => $index,
                     'is_active' => true,
                     'meta_title' => "{$coach['name']} Hire UK | Brit Travel",

@@ -43,15 +43,9 @@
             <div class="gsap-reveal">
                 <div class="relative aspect-[16/10] overflow-hidden rounded-3xl bg-gradient-to-br from-navy-800 to-navy-950">
                     @php
-                        $vehicleType = $coach->seats <= 16 ? 'minibus' : 'coach';
-                        $heroWebp = null;
-                        $heroJpg = null;
-                        if ($coach->image && ! str_starts_with($coach->image, 'http')) {
-                            $heroWebp = asset('storage/'.$coach->image);
-                            $heroJpg = asset('storage/'.\Illuminate\Support\Str::replaceLast('.webp', '.jpg', $coach->image));
-                        } elseif ($coach->image) {
-                            $heroJpg = $coach->image;
-                        }
+                        $vehicleType = $coach->vehicleType();
+                        $heroWebp = $coach->imageWebpUrl();
+                        $heroJpg = $coach->imageDisplayUrl();
                     @endphp
                     @if ($coach->image)
                         <picture>
@@ -78,7 +72,7 @@
                 @if ($coach->gallery)
                     <div class="mt-5 grid grid-cols-3 gap-4">
                         @foreach ($coach->gallery as $image)
-                            <img src="{{ asset('storage/'.$image) }}" alt="{{ $coach->name }} interior and exterior" loading="lazy" class="aspect-[4/3] w-full rounded-2xl object-cover">
+                            <img src="{{ $coach->mediaUrl($image) }}" alt="{{ $coach->name }} interior and exterior" loading="lazy" class="aspect-[4/3] w-full rounded-2xl object-cover">
                         @endforeach
                     </div>
                 @endif

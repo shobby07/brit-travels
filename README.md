@@ -1,6 +1,6 @@
 # Brit Travel — Coach Hire Website
 
-Modern, SEO-optimized coach hire website with online booking, quotation requests, and a full admin dashboard. Built for **https://brittravel.co.uk**, hosted on SiteGround.
+Modern, SEO-optimized coach hire website with online booking, quotation requests, and a full admin dashboard. Built for **https://brittravel.co.uk**, hosted on Laravel Cloud.
 
 ## Stack
 
@@ -44,4 +44,4 @@ Covers the booking/quote/contact flows, validation rules, email dispatch, public
 
 ## Deployment
 
-See **[DEPLOYMENT.md](DEPLOYMENT.md)** for the step-by-step SiteGround guide (database, SMTP, document root, cron for queued emails, SSL, go-live checklist).
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for the step-by-step Laravel Cloud guide (database, object storage for uploads, build/deploy commands, custom domain, go-live checklist). The previous SiteGround guide is kept at [DEPLOYMENT-SITEGROUND.md](DEPLOYMENT-SITEGROUND.md) for reference.

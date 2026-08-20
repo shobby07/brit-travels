@@ -53,7 +53,7 @@ class CoachForm
                             ->label('Main image')
                             ->helperText('Name the file descriptively before uploading, e.g. 70-seater-coach-brit-travel.webp — the filename is kept as-is for SEO.')
                             ->image()
-                            ->disk('public')
+                            ->disk(config('filesystems.default'))
                             ->directory('coaches')
                             ->getUploadedFileNameForStorageUsing(
                                 fn ($file) => Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$file->getClientOriginalExtension()
@@ -65,7 +65,7 @@ class CoachForm
                             ->helperText('Name each file descriptively before uploading — filenames are kept as-is for SEO.')
                             ->image()
                             ->multiple()
-                            ->disk('public')
+                            ->disk(config('filesystems.default'))
                             ->directory('coaches/gallery')
                             ->getUploadedFileNameForStorageUsing(
                                 fn ($file) => Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$file->getClientOriginalExtension()

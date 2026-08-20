@@ -1,17 +1,10 @@
 @props(['coach', 'eager' => false])
 
 @php
-    $vehicleType = $coach->seats <= 16 ? 'minibus' : 'coach';
-    $altText = "{$coach->seats}-seat {$vehicleType} exterior, Brit Travel fleet";
+    $altText = "{$coach->seats}-seat {$coach->vehicleType()} exterior, Brit Travel fleet";
 
-    $webpUrl = null;
-    $jpgUrl = null;
-    if ($coach->image && ! str_starts_with($coach->image, 'http')) {
-        $webpUrl = asset('storage/'.$coach->image);
-        $jpgUrl = asset('storage/'.\Illuminate\Support\Str::replaceLast('.webp', '.jpg', $coach->image));
-    } elseif ($coach->image) {
-        $jpgUrl = $coach->image;
-    }
+    $webpUrl = $coach->imageWebpUrl();
+    $jpgUrl = $coach->imageDisplayUrl();
 
     $vehicleJsonLd = [
         '@context' => 'https://schema.org',

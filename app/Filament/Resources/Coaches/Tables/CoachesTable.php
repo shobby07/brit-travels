@@ -19,7 +19,7 @@ class CoachesTable
             ->reorderable('sort_order')
             ->columns([
                 ImageColumn::make('image')
-                    ->disk('public'),
+                    ->disk(config('filesystems.default')),
                 TextColumn::make('name')
                     ->searchable()
                     ->weight('bold'),

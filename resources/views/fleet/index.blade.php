@@ -5,7 +5,7 @@
     <x-page-header
         eyebrow="Our Fleet"
         title="A coach for every kind of journey"
-        subtitle="From executive 8-seater minibuses to 70-seat touring coaches — every vehicle is modern, air-conditioned, and driven by a licensed professional."
+        subtitle="From executive 8-seater minibuses to 70-seat touring coaches. Every vehicle is modern, air-conditioned, and driven by a licensed professional."
         image="images/hero/fleet-motorway-night.webp"
         imageAlt="Long-exposure light trails from traffic on a motorway at night"
     />
@@ -19,8 +19,8 @@
             </div>
 
             <div class="mt-16 rounded-3xl bg-navy-950 p-10 text-center sm:p-14 gsap-reveal">
-                <h2 class="font-display text-2xl font-semibold text-white sm:text-3xl">Not sure which size you need?</h2>
-                <p class="mx-auto mt-3 max-w-xl text-sm text-white/60">Tell us about your trip and group size — we'll recommend the right vehicle and send you a free quotation.</p>
+                <h2 class="font-display text-2xl font-semibold text-white sm:text-3xl">Let’s Plan Your Journey</h2>
+                <p class="mx-auto mt-3 max-w-xl text-sm text-white/60">Have a trip in mind? Send us your travel details and group size, and we’ll help you arrange the right coach for your journey.</p>
                 <a href="{{ route('quote.create') }}" class="btn-primary mt-7">Get a Free Quote</a>
             </div>
         </div>
