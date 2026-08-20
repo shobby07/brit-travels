@@ -17,7 +17,13 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    // Falls back to MySQL rather than Laravel's stock `sqlite` default: on a
+    // host with an ephemeral filesystem there is no database.sqlite file, so
+    // falling back to SQLite turns a missing DB_CONNECTION into a confusing
+    // "database file does not exist" 500 instead of a real connection error.
+    // Local development and the test suite both set DB_CONNECTION explicitly
+    // (.env and phpunit.xml), so this fallback only applies in deployment.
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------

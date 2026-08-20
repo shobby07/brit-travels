@@ -94,8 +94,10 @@ In **Settings → Deployments**:
 
 **Build command:**
 ```bash
-composer install --no-dev && npm run build && php artisan config:cache && php artisan optimize
+composer install --no-dev && npm run build && php artisan optimize
 ```
+
+(`optimize` already includes `config:cache`, so there's no need to list both.)
 
 **Deploy command** (runs just before the new version goes live):
 ```bash
@@ -139,6 +141,42 @@ placeholder illustration — no manual uploading required.
 
 Replacing a photo later is still done from `/admin` → **Fleet** → edit a coach. Those
 uploads go to Object Storage, and re-running the seeder will **not** overwrite them.
+
+## Troubleshooting
+
+### "Database file at path [/var/www/html/database/database.sqlite] does not exist"
+
+This means the app is falling back to SQLite because it isn't seeing a MySQL
+connection. There is no `database.sqlite` file on Cloud — the filesystem is wiped every
+deploy — so the app 500s. Two things cause it:
+
+1. **No MySQL database is attached yet.** Do step 2 above. Attaching it is what makes
+   Cloud inject `DB_HOST` / `DB_USERNAME` / `DB_PASSWORD` / `DB_DATABASE`.
+2. **The database was attached but the environment wasn't redeployed.** Config is
+   cached at *build* time by `php artisan optimize`, so newly injected variables are
+   ignored until the next deploy. **After attaching any resource or editing any
+   environment variable, you must redeploy** for it to take effect.
+
+The `config/database.php` fallback is now `mysql` rather than `sqlite`, so a missing
+`DB_CONNECTION` surfaces as a real connection error rather than this confusing
+"file does not exist" message. If you still see a connection error after redeploying,
+it means the app is reaching for MySQL but the credentials aren't attached — recheck
+step 2.
+
+To see what the live app actually resolved, run this in the **Commands** tab:
+
+```bash
+php artisan about --only=drivers
+```
+
+### Checking whether migrations ran
+
+```bash
+php artisan migrate:status
+```
+
+If the tables aren't there, your deploy command (step 5) isn't running or is failing —
+check the deployment log.
 
 ## 10. Go-live checklist
 
