@@ -1,64 +1,37 @@
 # Deploying Brit Travel to Laravel Cloud
 
-This guide takes the site from this folder to live on **Laravel Cloud** (cloud.laravel.com).
+This site runs **without a database**. Everything it needs ships with the code, so a
+deploy is just: push, build, done — no database to create, attach, or pay for.
 
-> Previously this project targeted SiteGround — that guide is kept at
-> [DEPLOYMENT-SITEGROUND.md](DEPLOYMENT-SITEGROUND.md) for reference, but Laravel Cloud
-> is the current deployment target.
+> The earlier SiteGround guide is kept at [DEPLOYMENT-SITEGROUND.md](DEPLOYMENT-SITEGROUND.md).
 
-## Why this needed code changes, not just a dashboard setup
+## How the site works now
 
-Laravel Cloud's filesystem is **ephemeral** — every deploy resets it, and each running
-replica has its own separate copy. That breaks two things this project used to rely on:
+| Thing | Where it lives |
+|---|---|
+| Fleet (8 coaches) | `config/fleet.php` |
+| Location pages (9 cities) | `config/locations.php` |
+| FAQs | `config/faqs.php` |
+| Testimonials | `config/testimonials.php` |
+| Phone, email, address, hero text, social links | `config/site.php` |
+| Coach photos | `public/images/coaches/` |
+| Location hero photos | `public/images/hero/` |
 
-1. **SQLite** (`database/database.sqlite`) — the file doesn't exist on a fresh
-   deploy, which is exactly the `Database file ... does not exist` error you saw.
-   → Fixed by attaching a real **MySQL** database (step 2 below); no code change
-   needed since Laravel already reads standard `DB_*` env vars.
-2. **Coach photo uploads** via `/admin` — they used to save to local disk
-   (`storage/app/public`) and a `storage:link` symlink, which also don't survive a
-   redeploy or a second app replica.
-   → Fixed in code: uploads now go through `config('filesystems.default')` instead of
-   a hardcoded `'public'` disk, and image URLs are built with `Storage::url()` instead
-   of a hardcoded `asset('storage/...')` path. Point that default disk at Laravel Cloud
-   **Object Storage** (step 3) and uploads persist correctly, on every replica.
+Booking, quote, and contact submissions are **emailed straight to you** and are not
+stored anywhere. There is no `/admin` panel.
 
-Nothing about the local dev workflow changes — `sqlite` + the local `public` disk +
-`storage:link` still work exactly as before on your PC.
-
----
+⚠️ **Because nothing is stored, the notification email is the only record of a
+booking.** If it fails to send, the visitor is shown an error asking them to phone
+instead, rather than a thank-you page for a request you never received. Make sure your
+SMTP settings (below) are correct and that the emails aren't landing in spam.
 
 ## 1. Push the code
 
-Laravel Cloud deploys straight from your Git repo (GitHub/GitLab/Bitbucket) — no manual
-upload. Just make sure this branch is pushed.
+Laravel Cloud deploys from your Git repo. Just make sure `main` is pushed.
 
-## 2. Create the app and attach a MySQL database
+## 2. Set environment variables
 
-1. [cloud.laravel.com](https://cloud.laravel.com) → **New Application** → connect this repo.
-2. On the environment's **Infrastructure** canvas → **Add database** → **Laravel MySQL**
-   → create a cluster (Flex size is fine to start) → create/select a database.
-3. Attach it to your environment. Laravel Cloud auto-injects `DB_HOST`, `DB_USERNAME`,
-   `DB_PASSWORD`, `DB_DATABASE` (and `DB_CONNECTION=mysql`) — no `.env` editing needed.
-
-## 3. Attach Object Storage (for coach photos & fleet uploads)
-
-1. On the same Infrastructure canvas → **Add bucket** → **Laravel Object Storage**.
-2. **Disk name:** enter `s3` — this matches the disk already defined in
-   `config/filesystems.php`, so no extra config is required.
-3. **Visibility:** **Public** (coach photos need to be viewable by site visitors).
-4. Tick **"Set as default disk"** so `FILESYSTEM_DISK` gets injected automatically.
-5. Attach it to your environment.
-
-This also auto-injects the `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` /
-`AWS_DEFAULT_REGION` / `AWS_BUCKET` / `AWS_ENDPOINT` variables the `s3` disk expects.
-
-> The `league/flysystem-aws-s3-v3` package (required for the `s3` disk driver) has
-> already been added to `composer.json`/`composer.lock` — nothing to install manually.
-
-## 4. Set the remaining environment variables
-
-In your environment's **Settings → Environment Variables**, add:
+Settings → Environment Variables. **Delete any `DB_*` variables** — they do nothing now.
 
 ```env
 APP_NAME="Brit Travel"
@@ -66,9 +39,16 @@ APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://brittravel.co.uk
 
-QUEUE_CONNECTION=database
-SESSION_DRIVER=database
-CACHE_STORE=database
+SESSION_DRIVER=cookie
+CACHE_STORE=file
+QUEUE_CONNECTION=sync
+
+# Where booking, quote and contact submissions are sent — this is the inbox you check.
+BOOKING_NOTIFICATION_EMAIL=you@yourdomain.com
+
+# Shown on the site (footer, contact page, structured data).
+SITE_EMAIL=info@brittravel.co.uk
+SITE_PHONE="+44 7000 000000"
 
 MAIL_MAILER=smtp
 MAIL_HOST=your-smtp-host
@@ -78,134 +58,77 @@ MAIL_USERNAME=your-smtp-username
 MAIL_PASSWORD=your-smtp-password
 MAIL_FROM_ADDRESS="info@brittravel.co.uk"
 MAIL_FROM_NAME="Brit Travel"
-
-ADMIN_SEED_PASSWORD=set-a-strong-password-here
 ```
 
-`APP_KEY` is generated automatically for you on first deploy — you don't need to set it.
+`APP_KEY` is generated for you on first deploy.
 
-Database, session, and queue all use the `database` driver, which is backed by the
-MySQL database you attached in step 2 — this persists correctly across deploys and
-replicas (unlike the local filesystem).
+`SESSION_DRIVER=cookie` matters: Laravel Cloud's filesystem is wiped on every deploy and
+each replica has its own, so file-based sessions would be unreliable. Cookie sessions
+live in the visitor's browser and need no storage at all.
 
-## 5. Set build and deploy commands
+## 3. Set build & deploy commands
 
-In **Settings → Deployments**:
+Settings → Deployments.
 
 **Build command:**
 ```bash
 composer install --no-dev && npm run build && php artisan optimize
 ```
 
-(`optimize` already includes `config:cache`, so there's no need to list both.)
+**Deploy command:** leave it **empty**. There are no migrations to run.
 
-**Deploy command** (runs just before the new version goes live):
-```bash
-php artisan migrate --force
-```
+Do not add `php artisan storage:link` — nothing is uploaded at runtime.
 
-Do **not** add `php artisan storage:link` — it won't persist on Cloud's ephemeral
-filesystem and isn't needed once Object Storage is attached (see the note in
-[Environments](https://cloud.laravel.com/docs/environments) if curious).
+## 4. Deploy
 
-## 6. Deploy
+Click Deploy and watch the log. That's it — the site comes up complete, with the fleet,
+locations, FAQs, testimonials, and all photos already in place.
 
-Click **Deploy**. Laravel Cloud builds a Docker image, runs your build/deploy commands,
-then switches traffic over with zero downtime. Watch the **Deployments** log for errors.
+## 5. Send yourself a test booking
 
-## 7. Seed the database (one-time, via the Commands tab)
+The single most important check, because email is the whole booking system:
 
-Your environment's **Commands** tab lets you run one-off Artisan commands on the live app:
+1. Go to `/book` and submit a real booking.
+2. Confirm the notification arrives at `BOOKING_NOTIFICATION_EMAIL` — **check spam** the
+   first time, and mark it "not spam" so future ones land in the inbox.
+3. Confirm the customer copy arrives at the address you entered.
 
-```bash
-php artisan db:seed --force
-```
+## Changing content later
 
-This seeds the fleet, FAQs, and the admin user (see the password note below).
+All content is now in code, so changes are: edit the file, commit, push. Laravel Cloud
+redeploys automatically.
 
-> **Admin password:** the seeder creates `admin@brittravel.co.uk` using
-> `ADMIN_SEED_PASSWORD` from your environment variables (step 4). **Log in at `/admin`
-> and change it immediately.**
+| To change… | Edit… |
+|---|---|
+| Phone / email / address / hero text | `config/site.php` |
+| A coach's name, seats, description, amenities | `config/fleet.php` |
+| A city page's copy or FAQs | `config/locations.php` |
+| Site FAQs | `config/faqs.php` |
+| Testimonials | `config/testimonials.php` |
 
-## 8. Custom domain
+To swap a coach photo, drop a new WebP **and** JPEG pair into `public/images/coaches/`
+using the same filenames, or point that coach's `image` value at your new filename.
 
-**Settings → Domains** → add `brittravel.co.uk`, follow the DNS instructions shown
-(Laravel Cloud verifies ownership and issues the SSL certificate automatically).
-
-## 9. Coach photos — nothing to do
-
-The 8 real coach photos are committed to the repo under `public/images/coaches/`
-(WebP + JPEG pairs), and the seeder wires each one to its coach automatically. They
-ship with every deploy, so the fleet comes up with real photos rather than the
-placeholder illustration — no manual uploading required.
-
-Replacing a photo later is still done from `/admin` → **Fleet** → edit a coach. Those
-uploads go to Object Storage, and re-running the seeder will **not** overwrite them.
+Your phone and email can also be changed without a code change — they read from the
+`SITE_PHONE` and `SITE_EMAIL` environment variables.
 
 ## Troubleshooting
 
-### "Database file at path [/var/www/html/database/database.sqlite] does not exist"
+### Bookings aren't arriving
 
-This means the app is falling back to SQLite because it isn't seeing a MySQL
-connection. There is no `database.sqlite` file on Cloud — the filesystem is wiped every
-deploy — so the app 500s. Two things cause it:
+Check, in order:
 
-1. **No MySQL database is attached yet.** Do step 2 above. Attaching it is what makes
-   Cloud inject `DB_HOST` / `DB_USERNAME` / `DB_PASSWORD` / `DB_DATABASE`.
-2. **The database was attached but the environment wasn't redeployed.** Config is
-   cached at *build* time by `php artisan optimize`, so newly injected variables are
-   ignored until the next deploy. **After attaching any resource or editing any
-   environment variable, you must redeploy** for it to take effect.
+1. `BOOKING_NOTIFICATION_EMAIL` is set (Settings → Environment Variables) and you
+   redeployed after setting it — config is cached at build time.
+2. Your spam folder.
+3. Your `MAIL_*` settings. If SMTP is rejecting mail, visitors see an error on the form
+   telling them to call, and the failure is written to your logs.
 
-The `config/database.php` fallback is now `mysql` rather than `sqlite`, so a missing
-`DB_CONNECTION` surfaces as a real connection error rather than this confusing
-"file does not exist" message. If you still see a connection error after redeploying,
-it means the app is reaching for MySQL but the credentials aren't attached — recheck
-step 2.
+### A content change isn't showing
 
-To see what the live app actually resolved, run this in the **Commands** tab:
+You need to redeploy — content is baked into the config cache at build time.
 
-```bash
-php artisan about --only=drivers
-```
+### "Database file … does not exist"
 
-### Checking whether migrations ran
-
-```bash
-php artisan migrate:status
-```
-
-If the tables aren't there, your deploy command (step 5) isn't running or is failing —
-check the deployment log.
-
-## 10. Go-live checklist
-
-- [ ] Your `laravel.cloud` URL (or custom domain) loads with the padlock
-- [ ] Submit a test booking → email arrives at your notification address
-- [ ] `/admin` login works; **change the admin password**
-- [ ] Update phone/email/address in **Admin → Site Settings**
-- [ ] Fleet page shows the real coach photos (not the placeholder illustration)
-- [ ] Visit `/sitemap.xml` — then submit it in [Google Search Console](https://search.google.com/search-console)
-- [ ] Test the site on your phone
-
-## Updating the site later
-
-Laravel Cloud supports **push to deploy** — enabled by default. Just push to the branch
-your environment tracks and it redeploys automatically (build + deploy commands run
-again, including `migrate --force`).
-
-Content changes (coaches, FAQs, testimonials, hero text, contact details) need **no
-deployment** at all — edit them in `/admin`, they save straight to the database and
-Object Storage.
-
-## A note on coach-hire location hero images
-
-`app/Filament/Resources/CoachHireLocations/Schemas/CoachHireLocationForm.php` still
-saves its **hero image** uploads to a `public_assets` disk (the container's local
-`public/` folder) rather than the new default disk. That's intentional for the
-*seeded* location photos (they're committed to the git repo, so they survive every
-deploy), but it means **uploading a new/replacement hero image through `/admin` after
-go-live won't survive the next deploy** on Laravel Cloud. Until this field is moved
-over to the same Object Storage disk as coach photos, add new location photos to
-`public/images/hero/` in the repo and commit them, the same way the seeded ones work.
-Happy to wire this one up the same way if you'd like — just ask.
+This shouldn't be possible any more; nothing touches a database. If you ever see it, a
+`DB_*` environment variable or leftover code is at fault — send me the error.

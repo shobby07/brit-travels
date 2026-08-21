@@ -2,26 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
-class Faq extends Model
+/** A site-wide FAQ entry. Static content backed by config/faqs.php. */
+class Faq
 {
-    protected $fillable = [
-        'question',
-        'answer',
-        'sort_order',
-        'is_active',
-    ];
+    public function __construct(
+        public string $question = '',
+        public string $answer = '',
+    ) {}
 
-    protected function casts(): array
+    /** @return Collection<int, static> */
+    public static function active(): Collection
     {
-        return [
-            'is_active' => 'boolean',
-        ];
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true)->orderBy('sort_order');
+        return collect(config('faqs', []))
+            ->map(fn (array $row) => new static($row['question'], $row['answer']))
+            ->values();
     }
 }

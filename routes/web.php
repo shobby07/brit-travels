@@ -24,13 +24,15 @@ Route::get('/book', [BookingController::class, 'create'])->name('booking.create'
 Route::post('/book', [BookingController::class, 'store'])
     ->middleware('throttle:10,10')
     ->name('booking.store');
-Route::get('/book/thank-you/{booking:reference}', [BookingController::class, 'success'])->name('booking.success');
+// Requests aren't stored, so the thank-you page reads the reference from the
+// session flash rather than looking it up by reference in the URL.
+Route::get('/book/thank-you', [BookingController::class, 'success'])->name('booking.success');
 
 Route::get('/quote', [QuoteController::class, 'create'])->name('quote.create');
 Route::post('/quote', [QuoteController::class, 'store'])
     ->middleware('throttle:10,10')
     ->name('quote.store');
-Route::get('/quote/thank-you/{quote:reference}', [QuoteController::class, 'success'])->name('quote.success');
+Route::get('/quote/thank-you', [QuoteController::class, 'success'])->name('quote.success');
 
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/testimonials', [PageController::class, 'testimonials'])->name('testimonials');

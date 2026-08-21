@@ -53,7 +53,7 @@
         <nav aria-label="Footer fleet links">
             <h2 class="font-display text-sm font-semibold uppercase tracking-wider text-white">Popular Coaches</h2>
             <ul class="mt-4 space-y-3 text-sm">
-                @foreach (\App\Models\Coach::active()->take(5)->get() as $coach)
+                @foreach (\App\Models\Coach::active()->take(5) as $coach)
                     <li><a href="{{ route('fleet.show', $coach) }}" class="text-white/70 transition-colors hover:text-accent-400">{{ $coach->name }} Hire</a></li>
                 @endforeach
             </ul>

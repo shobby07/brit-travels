@@ -15,14 +15,14 @@ class PageController extends Controller
     public function testimonials()
     {
         return view('pages.testimonials', [
-            'testimonials' => Testimonial::active()->get(),
+            'testimonials' => Testimonial::active(),
         ]);
     }
 
     public function faq()
     {
         return view('pages.faq', [
-            'faqs' => Faq::active()->get(),
+            'faqs' => Faq::active(),
         ]);
     }
 

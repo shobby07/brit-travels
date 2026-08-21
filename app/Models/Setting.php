@@ -2,30 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
-
-class Setting extends Model
+/**
+ * Site settings.
+ *
+ * Backed by config/site.php rather than a database table — the API is kept as
+ * Setting::get() so the views and mailers that call it (and the setting()
+ * helper) did not need to change.
+ */
+class Setting
 {
-    protected $fillable = ['key', 'value'];
-
     public static function get(string $key, ?string $default = null): ?string
     {
-        $settings = Cache::rememberForever('site_settings', function () {
-            return static::pluck('value', 'key')->all();
-        });
+        $value = config("site.{$key}", $default);
 
-        return $settings[$key] ?? $default;
-    }
-
-    public static function set(string $key, ?string $value): void
-    {
-        static::updateOrCreate(['key' => $key], ['value' => $value]);
-    }
-
-    protected static function booted(): void
-    {
-        static::saved(fn () => Cache::forget('site_settings'));
-        static::deleted(fn () => Cache::forget('site_settings'));
+        // Treat a blank setting the same as a missing one, so callers relying
+        // on the default (e.g. an unset social link) behave as before.
+        return ($value === null || $value === '') ? $default : (string) $value;
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Coach;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreQuoteRequest extends FormRequest
 {
@@ -22,7 +24,7 @@ class StoreQuoteRequest extends FormRequest
             'return_date' => ['nullable', 'date', 'after_or_equal:pickup_date'],
             'return_time' => ['nullable', 'date_format:H:i'],
             'passengers' => ['nullable', 'integer', 'min:1', 'max:500'],
-            'coach_id' => ['nullable', 'exists:coaches,id'],
+            'coach_id' => ['nullable', Rule::in(Coach::ids())],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:30'],

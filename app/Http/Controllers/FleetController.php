@@ -9,17 +9,15 @@ class FleetController extends Controller
     public function index()
     {
         return view('fleet.index', [
-            'coaches' => Coach::active()->get(),
+            'coaches' => Coach::active(),
         ]);
     }
 
     public function show(Coach $coach)
     {
-        abort_unless($coach->is_active, 404);
-
         return view('fleet.show', [
             'coach' => $coach,
-            'others' => Coach::active()->whereKeyNot($coach->id)->take(3)->get(),
+            'others' => Coach::active()->reject(fn (Coach $other) => $other->slug === $coach->slug)->take(3),
         ]);
     }
 }

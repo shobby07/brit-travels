@@ -2,76 +2,81 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Routing\UrlRoutable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class Coach extends Model
+/**
+ * A coach in the fleet.
+ *
+ * This is static content, not a database record — the fleet lives in
+ * config/fleet.php and ships with the app. It implements UrlRoutable so
+ * route model binding (/fleet/{coach}) and route() links keep working
+ * exactly as they did when this was an Eloquent model.
+ */
+class Coach implements UrlRoutable
 {
-    protected $fillable = [
-        'name',
-        'slug',
-        'seats',
-        'description',
-        'amenities',
-        'image',
-        'gallery',
-        'sort_order',
-        'is_active',
-        'meta_title',
-        'meta_description',
-    ];
+    public function __construct(
+        public int $id = 0,
+        public string $slug = '',
+        public string $name = '',
+        public int $seats = 0,
+        public ?string $description = null,
+        public array $amenities = [],
+        public ?string $image = null,
+        public array $gallery = [],
+        public ?string $meta_title = null,
+        public ?string $meta_description = null,
+    ) {}
 
-    protected function casts(): array
+    /** @return Collection<int, static> */
+    public static function active(): Collection
     {
-        return [
-            'amenities' => 'array',
-            'gallery' => 'array',
-            'is_active' => 'boolean',
-        ];
+        return collect(config('fleet', []))->map(fn (array $row) => new static(
+            id: $row['id'],
+            slug: $row['slug'],
+            name: $row['name'],
+            seats: $row['seats'],
+            description: $row['description'] ?? null,
+            amenities: $row['amenities'] ?? [],
+            image: $row['image'] ?? null,
+            gallery: $row['gallery'] ?? [],
+            meta_title: $row['meta_title'] ?? null,
+            meta_description: $row['meta_description'] ?? null,
+        ))->values();
     }
 
-    public function bookings(): HasMany
+    public static function findBySlug(string $slug): ?static
     {
-        return $this->hasMany(Booking::class);
+        return static::active()->firstWhere('slug', $slug);
     }
 
-    public function scopeActive($query)
+    public static function findById(int|string|null $id): ?static
     {
-        return $query->where('is_active', true)->orderBy('sort_order');
+        return $id === null ? null : static::active()->firstWhere('id', (int) $id);
     }
 
-    public function getRouteKeyName(): string
+    /** Valid coach ids, for validating the optional coach picker on the forms. */
+    public static function ids(): array
     {
-        return 'slug';
+        return static::active()->pluck('id')->all();
     }
 
     /**
-     * Public URL for a stored image path.
+     * Public URL for an image path.
      *
-     * Seeded fleet photos live under public/images/coaches and are committed
-     * with the app, so — like the location heroes — they resolve straight
-     * against the document root and survive a fresh deploy on a host with an
-     * ephemeral filesystem. Admin uploads go to the configured filesystem disk
-     * (the local public disk in dev, object storage in production) and are
-     * resolved through Storage instead.
+     * Fleet photos live under public/images/coaches and are committed with the
+     * app, so they resolve straight against the document root and survive a
+     * fresh deploy on a host with an ephemeral filesystem.
      */
     public function mediaUrl(string $path): string
     {
-        if (str_starts_with($path, 'http')) {
-            return $path;
-        }
-
-        return str_starts_with(ltrim($path, '/'), 'images/')
-            ? asset(ltrim($path, '/'))
-            : Storage::url($path);
+        return str_starts_with($path, 'http') ? $path : asset(ltrim($path, '/'));
     }
 
     /**
-     * WebP source for the main image, when one is actually available.
-     * Returns null for uploads saved in another format so we never advertise
-     * a `type="image/webp"` source that isn't a WebP.
+     * WebP source for the main image, when one is actually available, so we
+     * never advertise a `type="image/webp"` source that isn't a WebP.
      */
     public function imageWebpUrl(): ?string
     {
@@ -83,9 +88,9 @@ class Coach extends Model
     }
 
     /**
-     * URL for the <img> src — the JPEG companion where we can confirm one
-     * exists (the committed photos ship as WebP + JPEG pairs), otherwise the
-     * stored file itself so a WebP-only upload still renders.
+     * URL for the <img> src — the JPEG companion where one exists (the
+     * committed photos ship as WebP + JPEG pairs), otherwise the stored file
+     * itself so a WebP-only image still renders.
      */
     public function imageDisplayUrl(): ?string
     {
@@ -97,22 +102,36 @@ class Coach extends Model
             return $this->mediaUrl($this->image);
         }
 
-        $jpg = Str::replaceLast('.webp', '.jpg', $this->image);
-        $relative = ltrim($jpg, '/');
+        $relative = ltrim(Str::replaceLast('.webp', '.jpg', $this->image), '/');
 
-        if (str_starts_with($relative, 'images/')) {
-            return is_file(public_path($relative)) ? asset($relative) : $this->mediaUrl($this->image);
-        }
-
-        return Storage::exists($jpg) ? Storage::url($jpg) : $this->mediaUrl($this->image);
+        return is_file(public_path($relative)) ? asset($relative) : $this->mediaUrl($this->image);
     }
 
-    /**
-     * Whether this coach's vehicle reads as a minibus rather than a coach,
-     * used for alt text and copy.
-     */
+    /** Whether this vehicle reads as a minibus rather than a coach. */
     public function vehicleType(): string
     {
         return $this->seats <= 16 ? 'minibus' : 'coach';
+    }
+
+    public function getRouteKey(): string
+    {
+        return $this->slug;
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    public function resolveRouteBinding($value, $field = null): ?static
+    {
+        return $field === 'id'
+            ? static::findById($value)
+            : static::findBySlug((string) $value);
+    }
+
+    public function resolveChildRouteBinding($childType, $value, $field): ?static
+    {
+        return null;
     }
 }

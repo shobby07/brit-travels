@@ -22,16 +22,14 @@ class SitemapController extends Controller
             ['loc' => route('terms'), 'priority' => '0.3'],
         ];
 
-        $coaches = Coach::active()->get()->map(fn (Coach $coach) => [
+        $coaches = Coach::active()->map(fn (Coach $coach) => [
             'loc' => route('fleet.show', $coach),
             'priority' => '0.8',
-            'lastmod' => $coach->updated_at?->toAtomString(),
         ]);
 
-        $locations = CoachHireLocation::active()->get()->map(fn (CoachHireLocation $location) => [
+        $locations = CoachHireLocation::active()->map(fn (CoachHireLocation $location) => [
             'loc' => route('coach-hire.show', $location),
             'priority' => '0.8',
-            'lastmod' => $location->updated_at?->toAtomString(),
         ]);
 
         $urls = collect($staticRoutes)->concat($coaches)->concat($locations);

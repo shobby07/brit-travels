@@ -10,9 +10,7 @@ Reference: **{{ $quote->reference }}**
 {{ $quote->message }}
 @endif
 
-<x-mail::button :url="url('/admin/quotes')">
-Open Admin Dashboard
-</x-mail::button>
+Reply to this email to reach {{ $quote->name }} directly.
 
 {{ config('app.name') }}
 </x-mail::message>

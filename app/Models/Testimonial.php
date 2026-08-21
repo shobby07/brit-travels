@@ -2,28 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
-class Testimonial extends Model
+/** A customer testimonial. Static content backed by config/testimonials.php. */
+class Testimonial
 {
-    protected $fillable = [
-        'author',
-        'role',
-        'quote',
-        'rating',
-        'sort_order',
-        'is_active',
-    ];
+    public function __construct(
+        public string $author = '',
+        public ?string $role = null,
+        public string $quote = '',
+        public int $rating = 5,
+    ) {}
 
-    protected function casts(): array
+    /** @return Collection<int, static> */
+    public static function active(): Collection
     {
-        return [
-            'is_active' => 'boolean',
-        ];
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true)->orderBy('sort_order');
+        return collect(config('testimonials', []))->map(fn (array $row) => new static(
+            author: $row['author'],
+            role: $row['role'] ?? null,
+            quote: $row['quote'],
+            rating: $row['rating'] ?? 5,
+        ))->values();
     }
 }

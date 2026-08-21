@@ -16,6 +16,13 @@
                 </div>
             @endif
 
+            @if (session('quote_failed'))
+                <div class="mb-7 rounded-2xl border border-red-200 bg-red-50 px-6 py-4 text-sm text-red-700" role="alert">
+                    <strong class="font-semibold">We couldn't send your quote request.</strong>
+                    Please try again in a moment, or call us on {{ setting('phone') }} and we'll quote over the phone.
+                </div>
+            @endif
+
             <form
                 action="{{ route('quote.store') }}"
                 method="POST"

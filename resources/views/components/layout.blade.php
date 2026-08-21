@@ -7,7 +7,13 @@
 
 @php
     $siteName = setting('site_name', 'Brit Travel');
-    $pageTitle = $title ? "{$title} | {$siteName}" : "{$siteName} | Coach Hire UK";
+    // Some pages set a meta_title that already ends in the brand name — don't
+    // append it twice ("… — Brit Travel | Brit Travel").
+    $pageTitle = match (true) {
+        ! $title => "{$siteName} | Coach Hire UK",
+        str_contains($title, $siteName) => $title,
+        default => "{$title} | {$siteName}",
+    };
     $pageDescription = $description ?? 'Premium coach and minibus hire across the UK. Modern fleet from 8 to 70 seats, professional drivers, and instant online booking with Brit Travel.';
     $pageCanonical = $canonical ?? url()->current();
 @endphp

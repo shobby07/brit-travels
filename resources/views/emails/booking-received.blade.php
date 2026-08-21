@@ -10,9 +10,7 @@ Reference: **{{ $booking->reference }}**
 {{ $booking->notes }}
 @endif
 
-<x-mail::button :url="url('/admin/bookings')">
-Open Admin Dashboard
-</x-mail::button>
+Reply to this email to reach {{ $booking->name }} directly.
 
 {{ config('app.name') }}
 </x-mail::message>

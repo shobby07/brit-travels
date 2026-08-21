@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Coach;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreBookingRequest extends FormRequest
 {
@@ -52,7 +54,7 @@ class StoreBookingRequest extends FormRequest
             'luggage_small' => ['integer', 'min:0', 'max:999'],
             'bags_medium' => ['integer', 'min:0', 'max:999'],
             'luggage_large' => ['integer', 'min:0', 'max:999'],
-            'coach_id' => ['nullable', 'exists:coaches,id'],
+            'coach_id' => ['nullable', Rule::in(Coach::ids())],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:30'],

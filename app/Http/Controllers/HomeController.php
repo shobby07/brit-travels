@@ -11,9 +11,9 @@ class HomeController extends Controller
     public function __invoke()
     {
         return view('home', [
-            'coaches' => Coach::active()->get(),
-            'testimonials' => Testimonial::active()->take(4)->get(),
-            'faqs' => Faq::active()->take(4)->get(),
+            'coaches' => Coach::active(),
+            'testimonials' => Testimonial::active()->take(4),
+            'faqs' => Faq::active()->take(4),
         ]);
     }
 }

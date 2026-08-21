@@ -2,60 +2,61 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
-class Quote extends Model
+/**
+ * A quotation request.
+ *
+ * Not persisted — see the note on Booking. Built from the submitted form,
+ * emailed, then discarded.
+ */
+class Quote
 {
-    public const STATUS_NEW = 'new';
-    public const STATUS_RESPONDED = 'responded';
-    public const STATUS_CLOSED = 'closed';
+    public ?Coach $coach = null;
 
-    public const STATUSES = [
-        self::STATUS_NEW => 'New',
-        self::STATUS_RESPONDED => 'Responded',
-        self::STATUS_CLOSED => 'Closed',
-    ];
-
-    protected $fillable = [
-        'reference',
-        'trip_type',
-        'pickup_location',
-        'dropoff_location',
-        'pickup_date',
-        'pickup_time',
-        'return_date',
-        'return_time',
-        'passengers',
-        'coach_id',
-        'name',
-        'email',
-        'phone',
-        'message',
-        'status',
-        'admin_notes',
-    ];
-
-    protected function casts(): array
-    {
-        return [
-            'pickup_date' => 'date',
-            'return_date' => 'date',
-        ];
+    public function __construct(
+        public string $reference = '',
+        public ?string $trip_type = null,
+        public ?string $pickup_location = null,
+        public ?string $dropoff_location = null,
+        public ?Carbon $pickup_date = null,
+        public ?string $pickup_time = null,
+        public ?Carbon $return_date = null,
+        public ?string $return_time = null,
+        public ?int $passengers = null,
+        public ?int $coach_id = null,
+        public ?string $name = null,
+        public ?string $email = null,
+        public ?string $phone = null,
+        public ?string $message = null,
+    ) {
+        $this->coach = Coach::findById($this->coach_id);
     }
 
-    public function coach(): BelongsTo
+    /** Build from validated form input. */
+    public static function fromArray(array $data): static
     {
-        return $this->belongsTo(Coach::class);
+        return new static(
+            reference: $data['reference'] ?? static::generateReference(),
+            trip_type: $data['trip_type'] ?? null,
+            pickup_location: $data['pickup_location'] ?? null,
+            dropoff_location: $data['dropoff_location'] ?? null,
+            pickup_date: ! empty($data['pickup_date']) ? Carbon::parse($data['pickup_date']) : null,
+            pickup_time: $data['pickup_time'] ?? null,
+            return_date: ! empty($data['return_date']) ? Carbon::parse($data['return_date']) : null,
+            return_time: $data['return_time'] ?? null,
+            passengers: isset($data['passengers']) && $data['passengers'] !== null ? (int) $data['passengers'] : null,
+            coach_id: isset($data['coach_id']) && $data['coach_id'] !== null ? (int) $data['coach_id'] : null,
+            name: $data['name'] ?? null,
+            email: $data['email'] ?? null,
+            phone: $data['phone'] ?? null,
+            message: $data['message'] ?? null,
+        );
     }
 
     public static function generateReference(): string
     {
-        do {
-            $reference = 'QT-'.now()->format('Y').'-'.strtoupper(str()->random(5));
-        } while (static::where('reference', $reference)->exists());
-
-        return $reference;
+        return 'QT-'.now()->format('Y').'-'.strtoupper(str()->random(5));
     }
 
     public function isRoundTrip(): bool

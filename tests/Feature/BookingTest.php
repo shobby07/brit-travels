@@ -5,19 +5,15 @@ namespace Tests\Feature;
 use App\Mail\BookingConfirmationMail;
 use App\Mail\BookingReceivedMail;
 use App\Models\Booking;
-use App\Models\Setting;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class BookingTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();
-        Setting::set('booking_notification_email', 'owner@example.com');
+        config(['site.booking_notification_email' => 'owner@example.com']);
     }
 
     private function validPayload(array $overrides = []): array
@@ -38,28 +34,36 @@ class BookingTest extends TestCase
         ], $overrides);
     }
 
+    /** Grab the Booking object off the notification email that was sent. */
+    private function sentBooking(): Booking
+    {
+        $sent = Mail::sent(BookingReceivedMail::class);
+
+        $this->assertNotEmpty($sent, 'No booking notification email was sent.');
+
+        return $sent->first()->booking;
+    }
+
     public function test_booking_page_loads(): void
     {
         $this->get(route('booking.create'))->assertOk();
     }
 
-    public function test_one_way_booking_is_stored_and_emails_sent(): void
+    public function test_one_way_booking_emails_the_office_and_the_customer(): void
     {
         Mail::fake();
 
         $response = $this->post(route('booking.store'), $this->validPayload());
 
-        $booking = Booking::first();
-        $this->assertNotNull($booking);
-        $this->assertSame('pending', $booking->status);
-        $this->assertStringStartsWith('BT-', $booking->reference);
-        $response->assertRedirect(route('booking.success', $booking));
+        $response->assertRedirect(route('booking.success'));
 
-        Mail::assertQueued(BookingReceivedMail::class, fn ($mail) => $mail->hasTo('owner@example.com'));
-        Mail::assertQueued(BookingConfirmationMail::class, fn ($mail) => $mail->hasTo('jane@example.com'));
+        Mail::assertSent(BookingReceivedMail::class, fn ($mail) => $mail->hasTo('owner@example.com'));
+        Mail::assertSent(BookingConfirmationMail::class, fn ($mail) => $mail->hasTo('jane@example.com'));
+
+        $this->assertStringStartsWith('BT-', $this->sentBooking()->reference);
     }
 
-    public function test_via_routes_are_stored_in_order(): void
+    public function test_via_routes_are_kept_in_order(): void
     {
         Mail::fake();
 
@@ -69,7 +73,7 @@ class BookingTest extends TestCase
 
         $this->assertSame(
             ['Birmingham New Street', 'Stoke-on-Trent'],
-            Booking::firstOrFail()->via_routes,
+            $this->sentBooking()->via_routes,
         );
     }
 
@@ -81,16 +85,18 @@ class BookingTest extends TestCase
             'via_routes' => ['  Coventry  ', '', '   '],
         ]))->assertSessionHasNoErrors();
 
-        $this->assertSame(['Coventry'], Booking::firstOrFail()->via_routes);
+        $this->assertSame(['Coventry'], $this->sentBooking()->via_routes);
     }
 
     public function test_via_routes_are_capped(): void
     {
+        Mail::fake();
+
         $this->post(route('booking.store'), $this->validPayload([
             'via_routes' => array_map(fn ($i) => "Stop {$i}", range(1, 11)),
         ]))->assertSessionHasErrors('via_routes');
 
-        $this->assertSame(0, Booking::count());
+        Mail::assertNothingSent();
     }
 
     public function test_booking_without_via_routes_is_valid(): void
@@ -99,7 +105,7 @@ class BookingTest extends TestCase
 
         $this->post(route('booking.store'), $this->validPayload())->assertSessionHasNoErrors();
 
-        $this->assertNull(Booking::firstOrFail()->via_routes);
+        $this->assertSame([], $this->sentBooking()->via_routes);
     }
 
     public function test_notes_field_is_no_longer_offered_on_the_form(): void
@@ -111,13 +117,13 @@ class BookingTest extends TestCase
             ->assertSee('Add destination');
     }
 
-    public function test_luggage_counts_are_stored_and_summarised(): void
+    public function test_luggage_counts_are_carried_through_and_summarised(): void
     {
         Mail::fake();
 
         $this->post(route('booking.store'), $this->validPayload());
 
-        $booking = Booking::firstOrFail();
+        $booking = $this->sentBooking();
         $this->assertSame(4, $booking->luggage_small);
         $this->assertSame(2, $booking->bags_medium);
         $this->assertSame(6, $booking->luggage_large);
@@ -134,7 +140,7 @@ class BookingTest extends TestCase
 
         $this->post(route('booking.store'), $payload)->assertSessionHasNoErrors();
 
-        $booking = Booking::firstOrFail();
+        $booking = $this->sentBooking();
         $this->assertSame(0, $booking->luggage_small);
         $this->assertSame(0, $booking->bags_medium);
         $this->assertSame(0, $booking->luggage_large);
@@ -143,11 +149,13 @@ class BookingTest extends TestCase
 
     public function test_passengers_is_still_required(): void
     {
+        Mail::fake();
+
         $payload = $this->validPayload();
         unset($payload['passengers']);
 
         $this->post(route('booking.store'), $payload)->assertSessionHasErrors('passengers');
-        $this->assertSame(0, Booking::count());
+        Mail::assertNothingSent();
     }
 
     public function test_booking_form_puts_passengers_and_luggage_in_step_two(): void
@@ -171,11 +179,10 @@ class BookingTest extends TestCase
         $this->post(route('booking.store'), $this->validPayload(['trip_type' => 'round_trip']))
             ->assertSessionHasErrors(['return_date', 'return_time']);
 
-        $this->assertSame(0, Booking::count());
         Mail::assertNothingOutgoing();
     }
 
-    public function test_round_trip_booking_is_stored(): void
+    public function test_round_trip_booking_is_sent(): void
     {
         Mail::fake();
 
@@ -185,17 +192,18 @@ class BookingTest extends TestCase
             'return_time' => '18:00',
         ]));
 
-        $this->assertSame(1, Booking::count());
-        $this->assertTrue(Booking::first()->isRoundTrip());
+        $this->assertTrue($this->sentBooking()->isRoundTrip());
     }
 
     public function test_pickup_date_cannot_be_in_the_past(): void
     {
+        Mail::fake();
+
         $this->post(route('booking.store'), $this->validPayload([
             'pickup_date' => now()->subDay()->toDateString(),
         ]))->assertSessionHasErrors('pickup_date');
 
-        $this->assertSame(0, Booking::count());
+        Mail::assertNothingSent();
     }
 
     public function test_return_date_cannot_be_before_pickup_date(): void
@@ -215,19 +223,32 @@ class BookingTest extends TestCase
         $this->post(route('booking.store'), $this->validPayload(['website' => 'http://spam.example']))
             ->assertSessionHasErrors('website');
 
-        $this->assertSame(0, Booking::count());
+        Mail::assertNothingSent();
     }
 
-    public function test_success_page_shows_reference(): void
+    public function test_success_page_shows_reference_from_the_session(): void
     {
-        $booking = Booking::create([
-            ...$this->validPayload(),
+        $this->withSession(['booking' => [
             'reference' => 'BT-2026-TEST1',
-            'status' => Booking::STATUS_PENDING,
-        ]);
-
-        $this->get(route('booking.success', $booking))
+            'name' => 'Jane Smith',
+            'email' => 'jane@example.com',
+        ]])
+            ->get(route('booking.success'))
             ->assertOk()
             ->assertSee('BT-2026-TEST1');
+    }
+
+    public function test_success_page_redirects_when_visited_directly(): void
+    {
+        $this->get(route('booking.success'))->assertRedirect(route('booking.create'));
+    }
+
+    public function test_visitor_is_warned_when_the_notification_email_cannot_be_sent(): void
+    {
+        Mail::shouldReceive('to')->andThrow(new \RuntimeException('SMTP down'));
+
+        $this->post(route('booking.store'), $this->validPayload())
+            ->assertRedirect()
+            ->assertSessionHas('booking_failed');
     }
 }
