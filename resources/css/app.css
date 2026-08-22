@@ -25,6 +25,10 @@
 
     --color-amber-brand: #f5a623;
 
+    /* WhatsApp brand green, for the floating chat button. */
+    --color-whatsapp: #25d366;
+    --color-whatsapp-600: #1fb855;
+
     --color-accent-50: #fef8ec;
     --color-accent-100: #fbedca;
     --color-accent-200: #f7d990;

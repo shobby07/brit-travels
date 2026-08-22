@@ -21,7 +21,7 @@
                     ['title' => '7. Luggage', 'body' => 'Luggage must be of reasonable size and quantity for the vehicle booked. Please tell us in advance about bulky items (e.g. sports equipment, instruments, wheelchairs) so we can allocate a suitable vehicle.'],
                     ['title' => '8. Delays', 'body' => 'While we plan every journey carefully, we cannot accept liability for delays caused by events outside our control, including traffic incidents, severe weather, or road closures. We will always communicate promptly and do everything we can to minimise disruption.'],
                     ['title' => '9. Liability', 'body' => 'Nothing in these terms limits our liability where it would be unlawful to do so. Our vehicles are fully insured for hire and reward as required by UK law.'],
-                    ['title' => '10. Contact', 'body' => 'Questions about these terms should be sent to '.setting('email', 'info@brittravel.co.uk').' quoting your booking or quotation reference where applicable.'],
+                    ['title' => '10. Contact', 'body' => 'Questions about these terms should be sent to '.setting('email', 'enquiries@brittravel.co.uk').' quoting your booking or quotation reference where applicable.'],
                 ] as $section)
                     <div class="gsap-reveal">
                         <h2 class="font-display text-xl font-semibold text-navy-950">{{ $section['title'] }}</h2>

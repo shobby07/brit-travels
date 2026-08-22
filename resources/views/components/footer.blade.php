@@ -86,9 +86,10 @@
 
     <div class="container-site">
         {{-- Divider sits inside the container so it lines up with the columns above
-             rather than bleeding to the viewport edges. Extra right padding keeps
-             the text clear of the floating scroll-to-top button. --}}
-        <div class="flex flex-col items-center justify-between gap-3 border-t border-white/10 py-6 pr-6 text-xs text-white/40 sm:flex-row sm:pr-20">
+             rather than bleeding to the viewport edges. Extra side padding keeps
+             the text clear of the floating scroll-to-top (right) and WhatsApp
+             (left) buttons. --}}
+        <div class="flex flex-col items-center justify-between gap-3 border-t border-white/10 py-6 pl-6 pr-6 text-xs text-white/40 sm:flex-row sm:pl-20 sm:pr-20">
             <p>&copy; {{ now()->year }} {{ setting('site_name', 'Brit Travel') }}. All rights reserved.</p>
             <p>Coach hire &amp; minibus hire across the United Kingdom.</p>
         </div>

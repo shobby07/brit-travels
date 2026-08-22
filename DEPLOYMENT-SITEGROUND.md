@@ -27,7 +27,7 @@ composer install --no-dev --optimize-autoloader
 
 ## 3. Create the email account
 
-1. **Site Tools → Email → Accounts** → create `info@brittravel.co.uk` (or use your existing one).
+1. **Site Tools → Email → Accounts** → create `enquiries@brittravel.co.uk` (or use your existing one).
 2. Note the SMTP settings (**Email → Accounts → Mail Configuration**):
    - Host: `mail.brittravel.co.uk` (SiteGround shows the exact host)
    - Port: `465` (SSL)
@@ -84,9 +84,9 @@ MAIL_MAILER=smtp
 MAIL_HOST=mail.brittravel.co.uk
 MAIL_PORT=465
 MAIL_SCHEME=smtps
-MAIL_USERNAME=info@brittravel.co.uk
+MAIL_USERNAME=enquiries@brittravel.co.uk
 MAIL_PASSWORD=your_mailbox_password
-MAIL_FROM_ADDRESS="info@brittravel.co.uk"
+MAIL_FROM_ADDRESS="enquiries@brittravel.co.uk"
 MAIL_FROM_NAME="Brit Travel"
 ```
 

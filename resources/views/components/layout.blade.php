@@ -77,6 +77,7 @@
 
     <x-footer />
 
+    <x-whatsapp-button />
     <x-scroll-to-top />
 </body>
 </html>

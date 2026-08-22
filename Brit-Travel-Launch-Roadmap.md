@@ -79,7 +79,7 @@ Your own `DEPLOYMENT.md` (already in your project) is a good, specific step-by-s
 **Day 7: Domain + database + email**
 1. In SiteGround Site Tools, add `brittravel.co.uk` as your site if not already, and point your domain's nameservers (at your registrar) to SiteGround, or add an A record — SiteGround shows you the exact values to use.
 2. Site Tools → MySQL → create your production database, user, and password.
-3. Site Tools → Email → Accounts → create/confirm `info@brittravel.co.uk` and note the SMTP settings for your `.env`.
+3. Site Tools → Email → Accounts → create/confirm `enquiries@brittravel.co.uk` and note the SMTP settings for your `.env`.
 
 Video walkthroughs for this part:
 - [How To Point Your Domain To Siteground Hosting (2026 Guide)](https://www.youtube.com/watch?v=YE7YBuJWVyg)

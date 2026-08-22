@@ -47,8 +47,10 @@ QUEUE_CONNECTION=sync
 BOOKING_NOTIFICATION_EMAIL=you@yourdomain.com
 
 # Shown on the site (footer, contact page, structured data).
-SITE_EMAIL=info@brittravel.co.uk
-SITE_PHONE="+44 7000 000000"
+SITE_EMAIL=enquiries@brittravel.co.uk
+SITE_PHONE="01206 591149"
+# Drives the floating WhatsApp button — full international form.
+SITE_WHATSAPP_NUMBER="+44 7348 656810"
 
 MAIL_MAILER=smtp
 MAIL_HOST=your-smtp-host
@@ -56,7 +58,7 @@ MAIL_PORT=587
 MAIL_SCHEME=tls
 MAIL_USERNAME=your-smtp-username
 MAIL_PASSWORD=your-smtp-password
-MAIL_FROM_ADDRESS="info@brittravel.co.uk"
+MAIL_FROM_ADDRESS="enquiries@brittravel.co.uk"
 MAIL_FROM_NAME="Brit Travel"
 ```
 

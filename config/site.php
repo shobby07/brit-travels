@@ -18,8 +18,8 @@ return [
     'site_name' => 'Brit Travel',
     'tagline' => 'Experience the ease and convenience of booking a coach with Brit Travel.',
 
-    'phone' => env('SITE_PHONE', '+44 0000 000000'),
-    'email' => env('SITE_EMAIL', 'info@brittravel.co.uk'),
+    'phone' => env('SITE_PHONE', '01206 591149'),
+    'email' => env('SITE_EMAIL', 'enquiries@brittravel.co.uk'),
     'address' => 'United Kingdom',
 
     /*
@@ -35,7 +35,7 @@ return [
 
     'booking_notification_email' => env(
         'BOOKING_NOTIFICATION_EMAIL',
-        env('SITE_EMAIL', 'info@brittravel.co.uk')
+        env('SITE_EMAIL', 'enquiries@brittravel.co.uk')
     ),
 
     /*
@@ -54,10 +54,15 @@ return [
     |
     | Leave blank to hide the icon.
     |
+    | whatsapp_number drives the floating WhatsApp button (see the
+    | x-whatsapp-button component). Write it in full international form —
+    | non-digits are stripped when the wa.me link is built, so a leading 0
+    | would produce an invalid link.
+    |
     */
 
     'facebook_url' => '',
     'instagram_url' => '',
-    'whatsapp_number' => '',
+    'whatsapp_number' => env('SITE_WHATSAPP_NUMBER', '+44 7348 656810'),
 
 ];
