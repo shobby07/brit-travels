@@ -76,14 +76,36 @@
         @apply font-display;
     }
 
-    /* iOS Safari lays date and time inputs out at a wide intrinsic minimum (the
-       spinner plus its calendar/clock icon). Inside a grid or flex track, whose
-       items default to min-width:auto, that minimum wins over w-full and pushes
-       the field out past the edge of its container. Letting them shrink puts
-       width:100% back in charge. */
+    /* Let date/time fields shrink inside a grid or flex track, whose items
+       otherwise default to min-width:auto and refuse to go below the control's
+       intrinsic width. */
     input[type="date"],
     input[type="time"] {
         min-width: 0;
+    }
+
+    /* On iOS these are native WebKit controls that size themselves and ignore
+       width:100%, so the field spills past the edge of its container however
+       narrow the track gets. Dropping the native appearance turns them into
+       ordinary boxes that honour the declared width.
+
+       Scoped to iOS via -webkit-touch-callout, which no desktop browser
+       supports: appearance:none would otherwise strip the calendar button that
+       Chrome and Firefox draw, where nothing is broken to begin with.
+
+       Worth knowing when testing: Chrome's device toolbar only changes the
+       viewport and UA string, it still paints Blink's own compact date widget,
+       so it cannot reproduce this. It needs a real iOS device. */
+    @supports (-webkit-touch-callout: none) {
+        input[type="date"],
+        input[type="time"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            /* Without the native control there is no implicit height, so an
+               empty field would collapse to the padding alone. */
+            min-height: 1.5em;
+        }
     }
 
     @media (prefers-reduced-motion: reduce) {
