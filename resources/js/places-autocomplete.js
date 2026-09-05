@@ -131,6 +131,7 @@ class PlaceAutocomplete {
         this.cache = new Map();
         this.requestSeq = 0;
         this.debounceTimer = null;
+        this.silent = false;
         this.sessionToken = null;
 
         this.buildDropdown();
@@ -183,6 +184,9 @@ class PlaceAutocomplete {
     }
 
     onInput() {
+        // Set by select(); the event came from us filling the field, not typing.
+        if (this.silent) return;
+
         const query = this.input.value.trim();
 
         clearTimeout(this.debounceTimer);
@@ -309,6 +313,13 @@ class PlaceAutocomplete {
     }
 
     close() {
+        // Cancel anything queued or already in flight. Without this a response
+        // that lands after the list is dismissed still reaches render(), which
+        // calls open() and pops the list back over a field the visitor has
+        // finished with. Bumping the sequence makes any pending fetch stale.
+        clearTimeout(this.debounceTimer);
+        this.requestSeq++;
+
         if (! this.isOpen) return;
         this.list.hidden = true;
         this.isOpen = false;
@@ -378,9 +389,16 @@ class PlaceAutocomplete {
         this.sessionToken = null;
         this.close();
 
-        // Let Alpine's x-model (via stops) and any validation pick up the change.
+        // Alpine's x-model on the via-stop rows only updates on a real event, so
+        // the change has to be announced. Suppress our own input handler while it
+        // fires: otherwise it treats the address we just filled in as a fresh
+        // query, searches for it, and reopens the list showing the one place the
+        // visitor has already chosen. dispatchEvent is synchronous, so the flag
+        // is back down before anything else runs.
+        this.silent = true;
         this.input.dispatchEvent(new Event('input', { bubbles: true }));
         this.input.dispatchEvent(new Event('change', { bubbles: true }));
+        this.silent = false;
     }
 }
 
