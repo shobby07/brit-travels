@@ -18,7 +18,7 @@
         aria-label="Chat with us on WhatsApp"
         {{-- Insets match the scroll-to-top button on the opposite corner so the
              pair reads as one row above the footer. --}}
-        class="group fixed bottom-5 left-5 z-[60] flex h-13 w-13 items-center justify-center rounded-full bg-whatsapp text-white shadow-[0_8px_24px_-4px_rgba(37,211,102,0.5)] transition duration-300 hover:bg-whatsapp-600 hover:scale-105 focus-visible:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-whatsapp motion-reduce:transition-none sm:bottom-6 sm:left-6 sm:h-14 sm:w-14"
+        class="group fixed bottom-5 left-5 z-60 flex h-13 w-13 items-center justify-center rounded-full bg-whatsapp text-white shadow-[0_8px_24px_-4px_rgba(37,211,102,0.5)] transition duration-300 hover:bg-whatsapp-600 hover:scale-105 focus-visible:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-whatsapp motion-reduce:transition-none sm:bottom-6 sm:left-6 sm:h-14 sm:w-14"
     >
         {{-- Soft outward pulse to draw the eye; suppressed for reduced-motion users. --}}
         <span class="absolute inset-0 animate-ping rounded-full bg-whatsapp opacity-40 motion-reduce:hidden" aria-hidden="true"></span>

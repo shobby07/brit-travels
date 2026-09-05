@@ -5,7 +5,7 @@
     id="scroll-to-top"
     type="button"
     aria-label="Scroll to top"
-    class="group fixed bottom-6 right-6 z-[60] flex h-13 w-13 items-center justify-center rounded-full bg-navy-950 text-white opacity-0 translate-y-3 pointer-events-none shadow-lg shadow-navy-900/40 transition-all duration-300 hover:bg-navy-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500"
+    class="group fixed bottom-6 right-6 z-60 flex h-13 w-13 items-center justify-center rounded-full bg-navy-950 text-white opacity-0 translate-y-3 pointer-events-none shadow-lg shadow-navy-900/40 transition-all duration-300 hover:bg-navy-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500"
 >
     {{-- Progress ring: track + amber fill. Rotated so it fills from 12 o'clock. --}}
     <svg class="absolute inset-0 h-full w-full -rotate-90" viewBox="0 0 52 52" fill="none" aria-hidden="true">

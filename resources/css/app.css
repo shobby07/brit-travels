@@ -129,7 +129,7 @@
     /* Google Places suggestion list — appended to <body> by places-autocomplete.js
        and positioned in document coordinates, so it needs its own z-index. */
     .places-dropdown {
-        @apply absolute z-[60] max-h-72 list-none overflow-y-auto overscroll-contain rounded-xl border border-navy-100 bg-white py-1.5 shadow-xl shadow-navy-900/10;
+        @apply absolute z-60 max-h-72 list-none overflow-y-auto overscroll-contain rounded-xl border border-navy-100 bg-white py-1.5 shadow-xl shadow-navy-900/10;
     }
 
     .places-dropdown__option {
@@ -317,7 +317,7 @@
     }
 
     .testimonial-avatar {
-        @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-navy-100 to-navy-200 font-display text-sm font-bold text-navy-700 ring-1 ring-inset ring-white/60;
+        @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-navy-100 to-navy-200 font-display text-sm font-bold text-navy-700 ring-1 ring-inset ring-white/60;
     }
 
     /* Inset panel holding the quote, vertically centred so cards of differing

@@ -69,7 +69,7 @@
                 >
             </picture>
             {{-- Contrast overlay so headline text stays readable over the photo --}}
-            <div class="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/85 to-navy-950/50" aria-hidden="true"></div>
+            <div class="absolute inset-0 bg-linear-to-r from-navy-950 via-navy-950/85 to-navy-950/50" aria-hidden="true"></div>
             <div class="absolute inset-0 bg-navy-950/30" aria-hidden="true"></div>
         </div>
     @else

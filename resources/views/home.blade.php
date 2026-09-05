@@ -178,7 +178,7 @@
     @if ($testimonials->isNotEmpty())
         <section class="relative overflow-hidden py-20 sm:py-28">
             <div class="pointer-events-none absolute inset-0" aria-hidden="true">
-                <div class="absolute left-1/2 top-8 h-80 w-[52rem] max-w-[110vw] -translate-x-1/2 rounded-full bg-accent-400/10 blur-3xl"></div>
+                <div class="absolute left-1/2 top-8 h-80 w-208 max-w-[110vw] -translate-x-1/2 rounded-full bg-accent-400/10 blur-3xl"></div>
             </div>
 
             <div class="container-site relative">

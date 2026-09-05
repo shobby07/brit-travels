@@ -28,7 +28,7 @@
 <article class="group overflow-hidden rounded-3xl border border-navy-100 bg-white transition-all duration-300 hover:-translate-y-1.5 hover:border-navy-200 hover:shadow-xl hover:shadow-navy-900/10">
     <script type="application/ld+json">{!! json_encode($vehicleJsonLd, JSON_UNESCAPED_SLASHES) !!}</script>
     <a href="{{ route('fleet.show', $coach) }}" class="block">
-        <div class="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-navy-800 to-navy-950">
+        <div class="relative aspect-[16/10] overflow-hidden bg-linear-to-br from-navy-800 to-navy-950">
             @if ($coach->image)
                 <picture>
                     @if ($webpUrl)

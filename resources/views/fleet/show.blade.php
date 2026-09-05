@@ -41,7 +41,7 @@
     <section class="py-16 sm:py-24">
         <div class="container-site grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
             <div class="gsap-reveal">
-                <div class="relative aspect-[16/10] overflow-hidden rounded-3xl bg-gradient-to-br from-navy-800 to-navy-950">
+                <div class="relative aspect-[16/10] overflow-hidden rounded-3xl bg-linear-to-br from-navy-800 to-navy-950">
                     @php
                         $vehicleType = $coach->vehicleType();
                         $heroWebp = $coach->imageWebpUrl();
