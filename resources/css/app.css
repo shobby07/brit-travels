@@ -1,14 +1,15 @@
-@import '@fontsource-variable/space-grotesk';
-@import '@fontsource-variable/inter';
-@import 'tailwindcss';
+@import "@fontsource-variable/space-grotesk";
+@import "@fontsource-variable/inter";
+@import "tailwindcss";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../views/**/*.blade.php';
 
 @theme {
-    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
-    --font-display: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+    --font-display:
+        "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
 
     /* Brand: deep British navy + warm amber accent */
     --color-navy-50: #f0f4fa;
@@ -66,7 +67,12 @@
         @apply bg-white font-sans text-navy-900 antialiased;
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         @apply font-display;
     }
 
