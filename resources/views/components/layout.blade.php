@@ -64,6 +64,13 @@
     }
     </script>
 
+    {{-- Places (New) browser key for the address autocomplete. Absent key simply
+         leaves the location fields as plain text inputs. --}}
+    @if ($mapsKey = config('services.google_maps.key'))
+        <link rel="preconnect" href="https://maps.googleapis.com" crossorigin>
+        <meta name="google-maps-key" content="{{ $mapsKey }}">
+    @endif
+
     {{ $head ?? '' }}
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

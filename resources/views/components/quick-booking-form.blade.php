@@ -13,7 +13,7 @@
                 <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-accent-500">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
                 </span>
-                <input id="quick_pickup_location" name="pickup_location" type="text" required value="{{ $pickup }}" placeholder="Pickup address" class="field-input pl-10">
+                <input id="quick_pickup_location" name="pickup_location" type="text" required value="{{ $pickup }}" placeholder="Pickup address" class="field-input pl-10" data-place-autocomplete>
             </div>
         </div>
 
@@ -23,7 +23,7 @@
                 <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-accent-500">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
                 </span>
-                <input id="quick_dropoff_location" name="dropoff_location" type="text" required placeholder="Drop-off address" class="field-input pl-10">
+                <input id="quick_dropoff_location" name="dropoff_location" type="text" required placeholder="Drop-off address" class="field-input pl-10" data-place-autocomplete>
             </div>
         </div>
 

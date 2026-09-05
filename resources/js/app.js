@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import intlTelInput from 'intl-tel-input';
 import 'intl-tel-input/styles';
+import './places-autocomplete';
 
 gsap.registerPlugin(ScrollTrigger);
 

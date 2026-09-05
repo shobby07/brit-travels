@@ -82,12 +82,12 @@
             <div class="mt-6 grid gap-5 {{ $fieldGrid }}">
                 <div>
                     <label for="pickup_location" class="field-label">Pickup location *</label>
-                    <input id="pickup_location" name="pickup_location" type="text" required placeholder="e.g. London Victoria" value="{{ old('pickup_location', request('pickup_location', $pickup)) }}" class="field-input">
+                    <input id="pickup_location" name="pickup_location" type="text" required placeholder="e.g. London Victoria" value="{{ old('pickup_location', request('pickup_location', $pickup)) }}" class="field-input" data-place-autocomplete>
                     @error('pickup_location')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label for="dropoff_location" class="field-label">Drop-off location *</label>
-                    <input id="dropoff_location" name="dropoff_location" type="text" required placeholder="e.g. Manchester City Centre" value="{{ old('dropoff_location', request('dropoff_location')) }}" class="field-input">
+                    <input id="dropoff_location" name="dropoff_location" type="text" required placeholder="e.g. Manchester City Centre" value="{{ old('dropoff_location', request('dropoff_location')) }}" class="field-input" data-place-autocomplete>
                     @error('dropoff_location')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
 
@@ -106,6 +106,7 @@
                                     maxlength="255"
                                     placeholder="e.g. Birmingham New Street"
                                     class="field-input"
+                                    data-place-autocomplete
                                     :aria-label="'Via stop ' + (index + 1)"
                                 >
                                 <button

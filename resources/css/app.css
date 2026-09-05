@@ -126,6 +126,75 @@
         @apply mt-1.5 text-xs font-medium text-red-600;
     }
 
+    /* Google Places suggestion list — appended to <body> by places-autocomplete.js
+       and positioned in document coordinates, so it needs its own z-index. */
+    .places-dropdown {
+        @apply absolute z-[60] max-h-72 list-none overflow-y-auto overscroll-contain rounded-xl border border-navy-100 bg-white py-1.5 shadow-xl shadow-navy-900/10;
+    }
+
+    .places-dropdown__option {
+        @apply flex cursor-pointer items-start gap-2.5 px-3.5 py-2.5 text-sm text-navy-500 transition-colors;
+    }
+
+    .places-dropdown__option:hover,
+    .places-dropdown__option.is-active {
+        @apply bg-navy-50;
+    }
+
+    .places-dropdown__pin {
+        @apply mt-0.5 h-4 w-4 shrink-0 text-navy-300;
+    }
+
+    .places-dropdown__label {
+        @apply min-w-0 leading-snug;
+    }
+
+    .places-dropdown__main {
+        @apply text-navy-900;
+    }
+
+    .places-dropdown__match {
+        @apply font-semibold;
+    }
+
+    .places-dropdown__secondary {
+        @apply text-navy-400;
+    }
+
+    .places-dropdown__attribution {
+        @apply mt-1 border-t border-navy-100 px-3.5 pb-1 pt-2 text-right font-medium text-[11px] text-navy-400;
+    }
+
+    /* Dark variant for the fields sitting on the navy hero */
+    .places-dropdown--dark {
+        @apply border-white/15 bg-navy-900 shadow-black/40;
+    }
+
+    .places-dropdown--dark .places-dropdown__option {
+        @apply text-white/60;
+    }
+
+    .places-dropdown--dark .places-dropdown__option:hover,
+    .places-dropdown--dark .places-dropdown__option.is-active {
+        @apply bg-white/10;
+    }
+
+    .places-dropdown--dark .places-dropdown__pin {
+        @apply text-white/35;
+    }
+
+    .places-dropdown--dark .places-dropdown__main {
+        @apply text-white;
+    }
+
+    .places-dropdown--dark .places-dropdown__secondary {
+        @apply text-white/45;
+    }
+
+    .places-dropdown--dark .places-dropdown__attribution {
+        @apply border-white/10 text-white/45;
+    }
+
     .section-eyebrow {
         @apply mb-3 inline-block text-xs font-semibold uppercase tracking-[0.2em] text-accent-600;
     }
@@ -164,6 +233,122 @@
     @media (prefers-reduced-motion: reduce) {
         .marquee-track {
             animation: none;
+        }
+    }
+
+    /* Testimonials: two full-bleed rows drifting in opposite directions.
+       Transform-only, so the whole thing stays on the compositor. */
+    .testimonial-marquee {
+        @apply relative w-full overflow-hidden py-2;
+        --edge-fade: 3rem;
+        -webkit-mask-image: linear-gradient(
+            to right,
+            transparent 0,
+            #000 var(--edge-fade),
+            #000 calc(100% - var(--edge-fade)),
+            transparent 100%
+        );
+        mask-image: linear-gradient(
+            to right,
+            transparent 0,
+            #000 var(--edge-fade),
+            #000 calc(100% - var(--edge-fade)),
+            transparent 100%
+        );
+    }
+
+    @media (min-width: 640px) {
+        .testimonial-marquee {
+            --edge-fade: 8rem;
+        }
+    }
+
+    .testimonial-track {
+        @apply flex w-max will-change-transform;
+        animation: testimonial-drift var(--drift, 70s) linear infinite;
+    }
+
+    /* Lower lane travels right; same keyframes, played backwards. */
+    .testimonial-track--reverse {
+        animation-direction: reverse;
+    }
+
+    .testimonial-group {
+        @apply flex shrink-0 items-stretch gap-5 pr-5 sm:gap-6 sm:pr-6;
+    }
+
+    @keyframes testimonial-drift {
+        from {
+            transform: translate3d(0, 0, 0);
+        }
+        to {
+            transform: translate3d(-50%, 0, 0);
+        }
+    }
+
+    .testimonial-card {
+        @apply relative flex flex-col rounded-2xl border border-navy-100 bg-white p-5 sm:p-6;
+        box-shadow:
+            0 1px 2px rgb(10 21 38 / 0.04),
+            0 20px 44px -30px rgb(10 21 38 / 0.45);
+        transition:
+            box-shadow 0.4s ease,
+            border-color 0.4s ease;
+    }
+
+    /* Hover brightens the card but never halts the drift. */
+    .testimonial-card:hover {
+        @apply border-navy-200;
+        box-shadow:
+            0 1px 2px rgb(10 21 38 / 0.04),
+            0 26px 52px -30px rgb(10 21 38 / 0.4);
+    }
+
+    /* Marquee cards are landscape and intrinsically sized: max-content lets each
+       card be exactly as wide as its own quote wants to be on one line, so a short
+       testimonial makes a short card and the lane keeps an uneven rhythm. The grid
+       on /testimonials is unaffected and stays fluid.
+
+       The cap is the one number to tune: raise it and long quotes stay on a single
+       line in a wider card, lower it and they wrap to two lines in a shorter one. */
+    .testimonial-marquee .testimonial-card {
+        @apply w-max shrink-0;
+        max-width: min(92vw, 66rem);
+    }
+
+    .testimonial-avatar {
+        @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-navy-100 to-navy-200 font-display text-sm font-bold text-navy-700 ring-1 ring-inset ring-white/60;
+    }
+
+    /* Inset panel holding the quote, vertically centred so cards of differing
+       quote lengths still line up across a lane. */
+    .testimonial-quote {
+        @apply mt-3.5 flex flex-1 items-center rounded-xl border border-navy-100/80 bg-navy-50/70 px-5 py-4 text-[14px] font-medium leading-[1.65] text-navy-800 sm:px-6 sm:py-5;
+        /* Only bites once a quote is long enough to wrap past the cap above —
+           keeps the second line from being a lonely word. */
+        text-wrap: pretty;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        /* No drift: let the rows be swiped through instead. */
+        .testimonial-track {
+            animation: none;
+        }
+
+        .testimonial-marquee {
+            @apply overflow-x-auto;
+            -webkit-mask-image: none;
+            mask-image: none;
+        }
+
+        .testimonial-card,
+        .testimonial-card:hover {
+            @apply translate-y-0 transition-none;
+        }
+
+        /* The loop clone only exists to make the drift seamless. */
+        .testimonial-group--clone {
+            @apply hidden;
         }
     }
 }

@@ -43,11 +43,11 @@
                 </div>
                 <div>
                     <label for="hero-pickup" class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-white/50">Pickup location</label>
-                    <input id="hero-pickup" name="pickup_location" type="text" placeholder="e.g. London" class="w-full rounded-xl border border-white/15 bg-navy-900/80 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-accent-400 focus:outline-none">
+                    <input id="hero-pickup" name="pickup_location" type="text" placeholder="e.g. London" class="w-full rounded-xl border border-white/15 bg-navy-900/80 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-accent-400 focus:outline-none" data-place-autocomplete data-place-theme="dark">
                 </div>
                 <div>
                     <label for="hero-dropoff" class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-white/50">Drop-off location</label>
-                    <input id="hero-dropoff" name="dropoff_location" type="text" placeholder="e.g. Manchester" class="w-full rounded-xl border border-white/15 bg-navy-900/80 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-accent-400 focus:outline-none">
+                    <input id="hero-dropoff" name="dropoff_location" type="text" placeholder="e.g. Manchester" class="w-full rounded-xl border border-white/15 bg-navy-900/80 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-accent-400 focus:outline-none" data-place-autocomplete data-place-theme="dark">
                 </div>
                 <div>
                     <label for="hero-date" class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-white/50">Pickup date</label>
@@ -176,34 +176,23 @@
 
     {{-- Testimonials --}}
     @if ($testimonials->isNotEmpty())
-        <section class="py-20 sm:py-28">
-            <div class="container-site">
-                <div class="max-w-2xl mx-auto text-center gsap-reveal">
+        <section class="relative overflow-hidden py-20 sm:py-28">
+            <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+                <div class="absolute left-1/2 top-8 h-80 w-[52rem] max-w-[110vw] -translate-x-1/2 rounded-full bg-accent-400/10 blur-3xl"></div>
+            </div>
+
+            <div class="container-site relative">
+                <div class="mx-auto max-w-2xl text-center gsap-reveal">
                     <p class="section-eyebrow">Testimonials</p>
-                    <h2 class="section-title">When the Journey Goes Right, People Remember It.</h2>
-                </div>
-                <div class="mt-14 grid gap-6 sm:grid-cols-2 gsap-stagger">
-                    @foreach ($testimonials as $testimonial)
-                        <figure class="rounded-3xl border border-navy-100 bg-white p-8">
-                            <div class="flex gap-1 text-accent-400" aria-label="{{ $testimonial->rating }} out of 5 stars">
-                                @for ($i = 0; $i < $testimonial->rating; $i++)
-                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118L2.077 10.1c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
-                                @endfor
-                            </div>
-                            <blockquote class="mt-4 text-[15px] leading-relaxed text-navy-700">&ldquo;{{ $testimonial->quote }}&rdquo;</blockquote>
-                            <figcaption class="mt-5 flex items-center gap-3">
-                                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-navy-100 font-display text-sm font-bold text-navy-700">{{ str($testimonial->author)->substr(0, 1) }}</span>
-                                <span>
-                                    <span class="block text-sm font-semibold text-navy-950">{{ $testimonial->author }}</span>
-                                    @if ($testimonial->role)
-                                        <span class="block text-xs text-navy-500">{{ $testimonial->role }}</span>
-                                    @endif
-                                </span>
-                            </figcaption>
-                        </figure>
-                    @endforeach
+                    <h2 class="section-title">
+                        When the Journey Goes Right,<br class="hidden sm:inline">
+                        <span class="text-navy-400">People Remember It.</span>
+                    </h2>
+                    <p class="mt-5 text-sm leading-relaxed text-navy-600 sm:text-base">Schools, businesses, wedding planners and sports clubs — here's what they say after travelling with us.</p>
                 </div>
             </div>
+
+            <x-testimonial-marquee :testimonials="$testimonials" class="relative mt-14 gsap-reveal" />
         </section>
     @endif
 
