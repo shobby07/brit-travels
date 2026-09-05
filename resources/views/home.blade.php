@@ -34,22 +34,22 @@
                 data-hero-reveal
                 aria-label="Quick booking"
             >
-                <div>
+                <div class="min-w-0">
                     <label for="hero-trip-type" class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-white/50">Trip type</label>
                     <select id="hero-trip-type" name="trip_type" class="w-full rounded-xl border border-white/15 bg-navy-900/80 px-4 py-3 text-sm text-white focus:border-accent-400 focus:outline-none">
                         <option value="one_way">One way</option>
                         <option value="round_trip">Round trip</option>
                     </select>
                 </div>
-                <div>
+                <div class="min-w-0">
                     <label for="hero-pickup" class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-white/50">Pickup location</label>
                     <input id="hero-pickup" name="pickup_location" type="text" placeholder="e.g. London" class="w-full rounded-xl border border-white/15 bg-navy-900/80 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-accent-400 focus:outline-none" data-place-autocomplete data-place-theme="dark">
                 </div>
-                <div>
+                <div class="min-w-0">
                     <label for="hero-dropoff" class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-white/50">Drop-off location</label>
                     <input id="hero-dropoff" name="dropoff_location" type="text" placeholder="e.g. Manchester" class="w-full rounded-xl border border-white/15 bg-navy-900/80 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-accent-400 focus:outline-none" data-place-autocomplete data-place-theme="dark">
                 </div>
-                <div>
+                <div class="min-w-0">
                     <label for="hero-date" class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-white/50">Pickup date</label>
                     <input id="hero-date" name="pickup_date" type="date" min="{{ now()->toDateString() }}" class="w-full rounded-xl border border-white/15 bg-navy-900/80 px-4 py-3 text-sm text-white scheme-dark focus:border-accent-400 focus:outline-none">
                 </div>

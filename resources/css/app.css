@@ -76,6 +76,16 @@
         @apply font-display;
     }
 
+    /* iOS Safari lays date and time inputs out at a wide intrinsic minimum (the
+       spinner plus its calendar/clock icon). Inside a grid or flex track, whose
+       items default to min-width:auto, that minimum wins over w-full and pushes
+       the field out past the edge of its container. Letting them shrink puts
+       width:100% back in charge. */
+    input[type="date"],
+    input[type="time"] {
+        min-width: 0;
+    }
+
     @media (prefers-reduced-motion: reduce) {
         html {
             scroll-behavior: auto;
