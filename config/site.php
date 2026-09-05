@@ -49,20 +49,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Social links
+    | WhatsApp
     |--------------------------------------------------------------------------
     |
-    | Leave blank to hide the icon.
-    |
-    | whatsapp_number drives the floating WhatsApp button (see the
-    | x-whatsapp-button component). Write it in full international form —
-    | non-digits are stripped when the wa.me link is built, so a leading 0
-    | would produce an invalid link.
+    | Drives the floating WhatsApp button (see the x-whatsapp-button component).
+    | Write it in full international form — non-digits are stripped when the
+    | wa.me link is built, so a leading 0 would produce an invalid link.
     |
     */
 
-    'facebook_url' => '',
-    'instagram_url' => '',
     'whatsapp_number' => env('SITE_WHATSAPP_NUMBER', '+44 7348 656810'),
 
 ];

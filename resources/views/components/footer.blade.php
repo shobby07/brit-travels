@@ -8,34 +8,6 @@
             <p class="mt-4 text-sm leading-relaxed text-white/60">
                 {{ setting('tagline', 'Experience the ease and convenience of booking a coach with Brit Travel.') }}
             </p>
-
-            {{-- Social links: amber squares with a macOS-dock-style hover pop (Tailwind transform + transition only) --}}
-            <div class="mt-5 flex items-center gap-3">
-                <a
-                    href="https://facebook.com/brittravels"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Facebook"
-                    class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-400 text-white shadow-sm transition duration-150 ease-out hover:-translate-y-1 hover:scale-110 hover:bg-accent-500 focus-visible:-translate-y-1 focus-visible:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400 motion-reduce:transition-none"
-                >
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
-                    </svg>
-                </a>
-                <a
-                    href="https://instagram.com/brittravels"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Instagram"
-                    class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-400 text-white shadow-sm transition duration-150 ease-out hover:-translate-y-1 hover:scale-110 hover:bg-accent-500 focus-visible:-translate-y-1 focus-visible:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400 motion-reduce:transition-none"
-                >
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <rect x="2" y="2" width="20" height="20" rx="5"/>
-                        <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                    </svg>
-                </a>
-            </div>
         </div>
 
         <nav aria-label="Footer quick links">

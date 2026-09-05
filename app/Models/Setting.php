@@ -16,7 +16,7 @@ class Setting
         $value = config("site.{$key}", $default);
 
         // Treat a blank setting the same as a missing one, so callers relying
-        // on the default (e.g. an unset social link) behave as before.
+        // on the default (e.g. an unset phone number) behave as before.
         return ($value === null || $value === '') ? $default : (string) $value;
     }
 }
