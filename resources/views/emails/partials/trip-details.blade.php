@@ -1,8 +1,20 @@
+{{--
+    The trip summary table, shared by the booking and quote emails (both the
+    office notification and the customer's copy).
+
+    Keep every comment above the table. A Blade comment is stripped but the
+    newline it sat on is not, and a blank line ends a Markdown table — which
+    silently dropped every row below it, including the customer's name, email
+    and phone, out of the table and into raw "| **Name** | Jane |" pipe text.
+    For the same reason, notes about a row go at the end of its @if line.
+
+    Rows are conditional because quotes carry fewer fields than bookings:
+    quotes have no via stops and no luggage counts.
+--}}
 | | |
 |---|---|
 | **Trip type** | {{ $trip->trip_type === 'round_trip' ? 'Round trip' : 'One way' }} |
 | **Pickup** | {{ $trip->pickup_location }} |
-{{-- Shared with quotes, which have no via stops — the null-safe check keeps that working. --}}
 @if (! empty($trip->via_routes))
 | **Via** | {{ implode(' → ', (array) $trip->via_routes) }} |
 @endif
@@ -16,7 +28,6 @@
 @if ($trip->passengers)
 | **Passengers** | {{ $trip->passengers }} |
 @endif
-{{-- Shared with quotes, which have no luggage fields — method_exists keeps this safe. --}}
 @if (method_exists($trip, 'luggageSummary') && $trip->luggageSummary())
 | **Luggage** | {{ $trip->luggageSummary() }} |
 @endif

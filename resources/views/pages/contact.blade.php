@@ -54,7 +54,14 @@
             <div class="gsap-reveal" data-reveal="right">
                 @if (session('contact_sent'))
                     <div class="mb-6 rounded-2xl border border-green-200 bg-green-50 px-6 py-5 text-sm font-medium text-green-800" role="status">
-                        Thanks — your message has been sent! We'll get back to you shortly.
+                        Thanks — your message has been sent! We've emailed you a copy, and we'll get back to you within 24 hours.
+                    </div>
+                @endif
+
+                @if (session('contact_failed'))
+                    <div class="mb-6 rounded-2xl border border-red-200 bg-red-50 px-6 py-4 text-sm text-red-700" role="alert">
+                        <strong class="font-semibold">We couldn't send your message.</strong>
+                        Please try again in a moment, or call us on {{ setting('phone') }} and we'll help straight away.
                     </div>
                 @endif
 

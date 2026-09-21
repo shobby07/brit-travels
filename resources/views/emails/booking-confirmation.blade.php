@@ -1,13 +1,13 @@
 <x-mail::message>
-# Thanks {{ str($booking->name)->before(' ') }}, we've got your request!
+# Hello {{ str($booking->name)->before(' ') }}, your booking request has been received.
 
-Your booking request has been received and our team is reviewing it now. We'll confirm availability and get back to you shortly — usually within a few hours.
+Thank you for your booking request. Our team is currently reviewing the details and will confirm availability within 24 hours.
 
 Your reference: **{{ $booking->reference }}**
 
 @include('emails.partials.trip-details', ['trip' => $booking])
 
-If anything above looks wrong, just reply to this email or call us on {{ \App\Models\Setting::get('phone') }} and quote your reference.
+If any of the details above are incorrect, please reply to this email or call us on {{ \App\Models\Setting::get('phone') }} and we'll help straight away.
 
 Safe travels,<br>
 The {{ \App\Models\Setting::get('site_name', 'Brit Travel') }} Team

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ContactAcknowledgementMail;
 use App\Mail\ContactMessageMail;
 use App\Models\Coach;
 use Illuminate\Support\Facades\Mail;
@@ -56,6 +57,48 @@ class PublicPagesTest extends TestCase
         ])->assertSessionHas('contact_sent');
 
         Mail::assertSent(ContactMessageMail::class, fn ($mail) => $mail->hasTo('owner@example.com'));
+        Mail::assertSent(ContactAcknowledgementMail::class, fn ($mail) => $mail->hasTo('alice@example.com'));
+    }
+
+    /**
+     * The acknowledgement is a courtesy. The office copy has already been
+     * delivered by this point, so failing to send the sender's copy must not
+     * turn a received message into an error telling them to phone.
+     */
+    public function test_contact_acknowledgement_failure_does_not_discard_a_delivered_message(): void
+    {
+        Mail::shouldReceive('to')->andReturnSelf();
+        Mail::shouldReceive('send')->andReturnUsing(function ($mailable) {
+            if ($mailable instanceof ContactAcknowledgementMail) {
+                throw new \RuntimeException('Acknowledgement bounced');
+            }
+        });
+
+        $this->post(route('contact.send'), [
+            'name' => 'Alice',
+            'email' => 'alice@example.com',
+            'message' => 'Do you cover Scotland?',
+        ])
+            ->assertSessionHas('contact_sent')
+            ->assertSessionMissing('contact_failed');
+    }
+
+    /**
+     * Nothing is stored, so a message we failed to email is a message lost.
+     * The visitor has to be told to phone instead of being shown the green
+     * "message sent" banner for something that never left the server.
+     */
+    public function test_contact_form_reports_a_send_failure_instead_of_claiming_success(): void
+    {
+        Mail::shouldReceive('to->send')->andThrow(new \RuntimeException('SMTP is down'));
+
+        $this->post(route('contact.send'), [
+            'name' => 'Alice',
+            'email' => 'alice@example.com',
+            'message' => 'Do you cover Scotland?',
+        ])
+            ->assertSessionHas('contact_failed')
+            ->assertSessionMissing('contact_sent');
     }
 
     public function test_contact_form_rejects_honeypot_submissions(): void
