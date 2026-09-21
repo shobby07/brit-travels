@@ -45,7 +45,7 @@ return [
     */
 
     'hero_heading' => 'Travel Together, Travel Better',
-    'hero_subheading' => 'Modern coaches, professional drivers, and effortless booking — group travel across the UK made simple.',
+    'hero_subheading' => 'Modern coaches, professional drivers, and effortless booking group travel across the UK made simple.',
 
     /*
     |--------------------------------------------------------------------------

@@ -173,7 +173,7 @@
 
             <button type="button" @click="nextStep()" class="btn-primary mt-8 w-full">
                 Continue to Your Details
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                <svg class="btn-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
             </button>
         </div>
 
@@ -231,7 +231,7 @@
 
             <div class="mt-8 flex flex-col gap-3 sm:flex-row">
                 <button type="button" @click="step = 1" class="btn-secondary sm:w-auto">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+                    <svg class="btn-arrow btn-arrow--back" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
                     Back
                 </button>
                 <button type="submit" class="btn-primary flex-1">Submit Booking Request</button>

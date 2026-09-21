@@ -147,6 +147,36 @@
         @apply btn border border-white/25 text-white backdrop-blur-sm hover:border-white/60 hover:bg-white/10 active:scale-[0.98];
     }
 
+    /* Button arrow: rests pointing right and swings a quarter-turn to point
+       down-right while the button is hovered or keyboard-focused.
+
+       The rotation lives here rather than on a group-hover utility so every
+       button arrow behaves the same way without each usage having to remember
+       to opt in. .btn is an @utility, whose declarations get inlined into
+       .btn-primary and friends rather than leaving a .btn class on the element,
+       so the hover has to name the three concrete button classes. */
+    .btn-arrow {
+        @apply h-4 w-4 shrink-0 transition-transform duration-300 ease-out;
+    }
+
+    :is(.btn-primary, .btn-secondary, .btn-ghost-light):hover .btn-arrow,
+    :is(.btn-primary, .btn-secondary, .btn-ghost-light):focus-visible .btn-arrow {
+        @apply rotate-45;
+    }
+
+    /* A back arrow points left, so it mirrors: down-left, not down-right. */
+    :is(.btn-primary, .btn-secondary, .btn-ghost-light):hover .btn-arrow--back,
+    :is(.btn-primary, .btn-secondary, .btn-ghost-light):focus-visible
+        .btn-arrow--back {
+        @apply -rotate-45;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .btn-arrow {
+            @apply transition-none;
+        }
+    }
+
     .field-label {
         @apply mb-1.5 block text-sm font-medium text-navy-800;
     }

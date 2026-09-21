@@ -81,15 +81,15 @@
                 <p class="mt-6 max-w-md font-display text-base  text-navy-950 sm:text-lg ">We make coach hire across the UK simple, reliable, and stress-free. From corporate travel and airport transfers to school trips and private events, our modern coaches and professional drivers ensure every journey is comfortable, punctual, and planned with care.</p>
                 <a href="{{ route('contact') }}" class="btn-primary mt-8">
                     Get In Touch
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                    <svg class="btn-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                 </a>
             </div>
 
             <div class="flex flex-col border-2 p-5 rounded-xl gsap-stagger" x-data="{ open: 0 }">
                 @foreach ([
-                    ['title' => 'Easy Online Booking', 'text' => 'Book in under two minutes — choose one-way or round trip, tell us where and when, and we handle the rest.'],
+                    ['title' => 'Easy Online Booking', 'text' => 'Book in under two minutes choose one-way or round trip, tell us where and when, and we handle the rest.'],
                     ['title' => 'Professional Drivers', 'text' => 'Every journey comes with a fully licensed, DBS-checked driver who knows UK roads inside out.'],
-                    ['title' => 'Modern Fleet', 'text' => 'From 8-seat executive minibuses to 70-seat touring coaches — air-conditioned, comfortable, and maintained to the highest standard.'],
+                    ['title' => 'Modern Fleet', 'text' => 'From 8-seat executive minibuses to 70-seat touring coaches air-conditioned, comfortable, and maintained to the highest standard.'],
                     ['title' => 'Transparent Pricing', 'text' => 'Free same-day quotations with no hidden extras. Budget-friendly rates for schools, businesses, and private groups.'],
                 ] as $i => $feature)
                     <div class="flex gap-4  {{ $loop->last ? '' : 'pb-3' }}">
@@ -188,7 +188,7 @@
                         When the Journey Goes Right,<br class="hidden sm:inline">
                         <span class="text-navy-400">People Remember It.</span>
                     </h2>
-                    <p class="mt-5 text-sm leading-relaxed text-navy-600 sm:text-base">Schools, businesses, wedding planners and sports clubs — here's what they say after travelling with us.</p>
+                    <p class="mt-5 text-sm leading-relaxed text-navy-600 sm:text-base">Schools, businesses, wedding planners and sports clubs here's what they say after travelling with us.</p>
                 </div>
             </div>
 
